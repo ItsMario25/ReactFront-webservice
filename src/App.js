@@ -1,41 +1,43 @@
 
-import { BrowserRouter as Router, Link, Routes, Route } from 'react-router-dom';
-import Contact from './pages/Contact';
-import Aboutme from './pages/Aboutme';
-import Profile from './pages/Profile';
-import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
+//import { BrowserRouter as Router, Link, Routes, Route } from 'react-router-dom';
+//import Contact from './pages/Contact';
+//import Aboutme from './pages/Aboutme';
+//import Profile from './pages/Profile';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Navbar, Container, Row, Col, Form, Button } from 'react-bootstrap';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Router>
-          <div>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/contact">Contactos</Link>
-              </li>
-              <li>
-              <Link to="/aboutme">About me</Link>
-              </li>
-              <li>
-              <Link to="/profile">Profile</Link>
-              </li>
-            </ul>
-          </div>
-          <Routes>
-            <Route path='/contact' element={<Contact />}></Route>
-            <Route path='/aboutme' element={<Aboutme />}></Route>
-            <Route path='/profile/:name' element={<Profile />}></Route>
-          </Routes>
-        </Router>
+    <div>
+      {/* Navbar */}
+      <Navbar bg="dark" variant="dark" style={{ height: '20px' }}>
         <Container>
-        <Row className="justify-content-center mt-5">
-          <Col xs={10} sm={8} md={6}>
-            <h2 className="text-center">Login</h2>
+          <Navbar.Brand href="#home">
+            <img
+              src="path_to_left_image.png"
+              width="20"
+              height="20"
+              className="d-inline-block align-top"
+              alt="Left logo"
+            />
+          </Navbar.Brand>
+          <Navbar.Brand href="#home" className="ml-auto">
+            <img
+              src="path_to_right_image.png"
+              width="20"
+              height="20"
+              className="d-inline-block align-top"
+              alt="Right logo"
+            />
+          </Navbar.Brand>
+        </Container>
+      </Navbar>
+
+      {/* Login Form */}
+      <Container className="d-flex flex-column justify-content-center align-items-center" style={{ height: 'calc(100vh - 20px)' }}>
+        <Row>
+          <Col xs={12}>
             <Form>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
@@ -47,17 +49,13 @@ function App() {
                 <Form.Control type="password" placeholder="Password" />
               </Form.Group>
 
-              <Button variant="primary" type="submit" block>
-                Submit
+              <Button variant="primary" type="submit">
+                Login
               </Button>
             </Form>
-            <div className="mt-3 text-center">
-              <a href="#">Forgot Password?</a>
-            </div>
           </Col>
         </Row>
-       </Container>
-      </header>
+      </Container>
     </div>
   );
 }
