@@ -1,11 +1,9 @@
 
 //import { BrowserRouter as Router, Link, Routes, Route } from 'react-router-dom';
-//import Contact from './pages/Contact';
-//import Aboutme from './pages/Aboutme';
-//import Profile from './pages/Profile';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import leftImage from './images/cyseth.jpeg';
 import rightImage from './images/logoUnillanos.png';
+import iconImage from './images/user.png';
 import { Navbar, Container, Row, Col, Form, Button } from 'react-bootstrap';
 import './css/login.css';
 
@@ -41,6 +39,9 @@ function App() {
         <Row>
           <Col xs={12} md={12} lg={12} className="login-form">
             <Form>
+              <div className="text-center">
+                <img src={iconImage} alt="User Icon" className="user-icon" />
+              </div>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Usuario</Form.Label>
                 <Form.Control type="text" placeholder="Ingrese Usuario" />
@@ -63,6 +64,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;
