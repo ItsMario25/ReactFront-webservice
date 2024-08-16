@@ -1,0 +1,11 @@
+.login-form {
+    background-color: #995d5d; /* Color de fondo grisáceo */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 8px; /* Esquinas redondeadas */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin: 20px; /* Margen alrededor del contenedor */
+}
+  
+.mt-4 {
+    margin-top: 1.5rem; /* Espaciado vertical adicional para el botón */
+}
