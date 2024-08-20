@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar, Container, Button, Row, Col, Card } from 'react-bootstrap';
-import docenteImage from '../images/user.png'; // Asegúrate de tener esta imagen en la carpeta correcta
+import docenteImage from '../images/user.png'; 
+import leftImage from '../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/docentes.css';
 
@@ -8,8 +9,17 @@ const DocentesPage = () => {
   return (
     <div>
       {/* Navbar */}
-      <Navbar bg="dark" variant="dark" style={{ height: '20px' }}>
+      <Navbar bg="dark" variant="dark" style={{ height: '100px' }}>
         <Container>
+          <Navbar.Brand href="#home">
+            <img
+              src={leftImage}
+              width="145"
+              height="70"
+              className="d-inline-block align-top"
+              alt="Left logo"
+            />
+          </Navbar.Brand>
           <Navbar.Brand href="#home" className="ml-auto">
             <Button variant="outline-light">Salir</Button>
           </Navbar.Brand>

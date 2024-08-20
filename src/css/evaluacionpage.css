@@ -1,0 +1,11 @@
+/* Ejemplo de CSS para mejorar la presentación de la tabla */
+table {
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+  }
+  

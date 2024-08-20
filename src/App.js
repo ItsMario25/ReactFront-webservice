@@ -1,8 +1,9 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LoginPage from './pages/login'; // Asegúrate de que la ruta sea correcta
-import DocentesPage from './pages/docentesEvaluar'; // Asegúrate de que la ruta sea correcta
+import LoginPage from './pages/login'; 
+import DocentesPage from './pages/docentesEvaluar'; 
+import Evaluar from './pages/evaluacion';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/docentes" element={<DocentesPage />} />
+        <Route path="/evaluar" element={<Evaluar />} />
       </Routes>
     </Router>
   );
