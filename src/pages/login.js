@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import leftImage from '../images/cyseth.jpeg';
 import rightImage from '../images/logoUnillanos.png';
@@ -6,7 +6,31 @@ import iconImage from '../images/user.png';
 import { Navbar, Container, Row, Col, Form, Button } from 'react-bootstrap';
 import '../css/login.css';
 
-function login() {
+function Login() {
+  const [usuario, setUsuario] = useState('');
+  const [contrasena, setContrasena] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = { usuario, contrasena };
+
+    fetch('http://localhost:8080/verificar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        // Aquí puedes manejar la respuesta del servidor
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
+
   return (
     <div>
       {/* Navbar */}
@@ -37,18 +61,28 @@ function login() {
       <Container className="d-flex flex-column justify-content-center align-items-center" style={{ height: 'calc(100vh - 170px)' }} >
         <Row>
           <Col xs={12} md={12} lg={12} className="login-form">
-            <Form>
+            <Form onSubmit={handleSubmit}>
               <div className="text-center">
                 <img src={iconImage} alt="User Icon" className="user-icon" />
               </div>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Usuario</Form.Label>
-                <Form.Control type="text" placeholder="Ingrese Usuario" />
+                <Form.Control 
+                  type="text" 
+                  placeholder="Ingrese Usuario" 
+                  value={usuario} 
+                  onChange={(e) => setUsuario(e.target.value)} 
+                />
               </Form.Group>
 
               <Form.Group controlId="formBasicPassword">
                 <Form.Label>Contraseña</Form.Label>
-                <Form.Control type="password" placeholder="*******" />
+                <Form.Control 
+                  type="password" 
+                  placeholder="*******" 
+                  value={contrasena} 
+                  onChange={(e) => setContrasena(e.target.value)} 
+                />
               </Form.Group>
 
               <div className="d-flex justify-content-center mt-4">
@@ -64,4 +98,4 @@ function login() {
   );
 }
 
-export default login;
+export default Login;
