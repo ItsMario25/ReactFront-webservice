@@ -1,0 +1,19 @@
+.button-box {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  button {
+    width: 100%;
+  }
+  
+  h2 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .table {
+    margin-top: 20px;
+  }
+  

@@ -57,7 +57,7 @@ const EvaluacionPage = () => {
         </Container>
       </Navbar>
 
-      {/* Page Content */}
+      {/* Contenido */}
       <Container style={{ marginTop: '20px' }}>
         <h2>Evaluación del Docente</h2>
         <Form onSubmit={handleSubmit}>
