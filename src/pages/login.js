@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { v4 as uuidv4 } from 'uuid';
 import leftImage from '../images/cyseth.jpeg';
 import rightImage from '../images/logoUnillanos.png';
 import iconImage from '../images/user.png';
@@ -9,11 +10,28 @@ import '../css/login.css';
 function Login() {
   const [usuario, setUsuario] = useState('');
   const [contrasena, setContrasena] = useState('');
+  const [clientId, setClientId] = useState('');
+
+  useEffect(() => {
+    // Al montar el componente, genera o recupera el clientId
+    const storedClientId = localStorage.getItem('client_id');
+    if (storedClientId) {
+      setClientId(storedClientId);
+    } else {
+      const newClientId = uuidv4();
+      localStorage.setItem('client_id', newClientId);
+      setClientId(newClientId);
+    }
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = { usuario, contrasena };
+    const data = { usuario, contrasena, client_id: clientId };
 
+    console.log(usuario)
+    console.log(contrasena)
+    console.log(clientId)
+    
     fetch('http://localhost:8080/verificar', {
       method: 'POST',
       headers: {
