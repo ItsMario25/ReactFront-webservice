@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { Navbar, Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { v4 as uuidv4 } from 'uuid';
 import leftImage from '../images/cyseth.jpeg';
 import rightImage from '../images/logoUnillanos.png';
 import iconImage from '../images/user.png';
-import { Navbar, Container, Row, Col, Form, Button } from 'react-bootstrap';
 import '../css/login.css';
 
 function Login() {
+  const navigate = useNavigate();
   const [usuario, setUsuario] = useState('');
   const [contrasena, setContrasena] = useState('');
   const [clientId, setClientId] = useState('');
 
   useEffect(() => {
-    // Al montar el componente, genera o recupera el clientId
     const storedClientId = localStorage.getItem('client_id');
     if (storedClientId) {
       setClientId(storedClientId);
@@ -40,8 +42,20 @@ function Login() {
       console.log('Success:', data);
       const token = data.token;
       if (token) {
-        localStorage.setItem('authToken', token);
-        console.log('Token almacenado en localStorage:', token);
+        sessionStorage.setItem('authToken', token);
+        console.log('Token almacenado en cache:', token);
+
+        const decodedToken = jwtDecode(token);
+        console.log(decodedToken);
+
+        const role = decodedToken.rol_user; 
+        if (role === 'docente') {
+          navigate('/docentes'); 
+        } else if (role === 'estudiante') {
+          navigate('/estudiante'); 
+        } else {
+          navigate('/'); 
+        }
       } else {
         console.error('Token no recibido');
       }
