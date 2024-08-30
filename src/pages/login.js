@@ -28,10 +28,6 @@ function Login() {
     e.preventDefault();
     const data = { usuario, contrasena, client_id: clientId };
 
-    console.log(usuario)
-    console.log(contrasena)
-    console.log(clientId)
-    
     fetch('http://localhost:8080/verificar', {
       method: 'POST',
       headers: {
@@ -39,15 +35,21 @@ function Login() {
       },
       body: JSON.stringify(data),
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        // Aquí puedes manejar la respuesta del servidor
-      })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      const token = data.token;
+      if (token) {
+        localStorage.setItem('authToken', token);
+        console.log('Token almacenado en localStorage:', token);
+      } else {
+        console.error('Token no recibido');
+      }
+    })
       .catch(error => {
         console.error('Error:', error);
       });
-  };
+};
 
   return (
     <div>
