@@ -2,9 +2,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/login'; 
-import EstudiantePage from './pages/docentesEvaluar'; 
+import EstudiantePage from './pages/estudiantePage'; 
 import Evaluacion from './pages/evaluacion';
-import SecretarioPage from './pages/menuSecrAcd';
+import SecretarioPage from './pages/secretarioAcadPage';
 import Periodo from './pages/periodoAcademico';
 import ProtectedRoute from './componentes/protected_route';
 
@@ -17,7 +17,7 @@ function App() {
           <ProtectedRoute requiredRole="estudiante">
             <EstudiantePage />
           </ProtectedRoute>}/>
-        <Route path="/estudiante" element={<Evaluacion />} />
+        <Route path="/encuesta_estudiante" element={<Evaluacion />} />
         <Route path="/reportes" element={
           <ProtectedRoute requiredRole="secretario_academico">
             <SecretarioPage />
