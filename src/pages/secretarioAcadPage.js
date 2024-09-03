@@ -1,16 +1,10 @@
 import React from 'react';
-import { Navbar, Container, Button, Table, Row, Col } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Navbar, Container, Button, Row, Col, Form } from 'react-bootstrap';
 import leftImage from '../images/logoUnillanos.png';
-import '../css/reporte.css'; 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../css/docentes.css';
 
-const ReportsPage = () => {
-  const reportData = [
-    { periodo: '2024-1', inicio: '01/01/2024', fin: '30/06/2024' },
-    { periodo: '2023-2', inicio: '01/07/2023', fin: '31/12/2023' },
-    { periodo: '2023-1', inicio: '01/01/2023', fin: '30/06/2023' },
-  ];
-
+const AsignacionDocentesPage = () => {
   return (
     <div>
       {/* Navbar */}
@@ -33,47 +27,60 @@ const ReportsPage = () => {
 
       {/* Page Content */}
       <Container style={{ marginTop: '20px' }}>
-        {/* Buttons Row */}
-        <Row className="mb-4">
+        <Row>
           <Col>
-            <div className="button-box">
-              <Button variant="primary" block>
-                Realizar periodo de evaluación
-              </Button>
-            </div>
-          </Col>
-          <Col>
-            <div className="button-box">
-              <Button variant="secondary" block>
-                Reclamaciones
-              </Button>
-            </div>
+            <h2>Asignación de Docentes</h2>
           </Col>
         </Row>
 
-        {/* Reports Section */}
-        <h2>Reportes</h2>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Periodo académico</th>
-              <th>Fecha de inicio</th>
-              <th>Fecha final</th>
-            </tr>
-          </thead>
-          <tbody>
-            {reportData.map((report, index) => (
-              <tr key={index}>
-                <td>{report.periodo}</td>
-                <td>{report.inicio}</td>
-                <td>{report.fin}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <Row className="mt-4">
+          <Col md={4}>
+            <Form.Group controlId="docenteSelect">
+              <Form.Label>Seleccione Docente</Form.Label>
+              <Form.Control as="select">
+                <option>Docente 1</option>
+                <option>Docente 2</option>
+                <option>Docente 3</option>
+                {/* Añade más opciones según sea necesario */}
+              </Form.Control>
+            </Form.Group>
+          </Col>
+
+          <Col md={4}>
+            <Form.Group controlId="estudianteSelect">
+              <Form.Label>Seleccione Estudiante</Form.Label>
+              <Form.Control as="select">
+                <option>Estudiante 1</option>
+                <option>Estudiante 2</option>
+                <option>Estudiante 3</option>
+                {/* Añade más opciones según sea necesario */}
+              </Form.Control>
+            </Form.Group>
+          </Col>
+
+          <Col md={4}>
+            <Form.Group controlId="cursoSelect">
+              <Form.Label>Seleccione Curso</Form.Label>
+              <Form.Control as="select">
+                <option>Curso 1</option>
+                <option>Curso 2</option>
+                <option>Curso 3</option>
+                {/* Añade más opciones según sea necesario */}
+              </Form.Control>
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Row className="mt-4">
+          <Col>
+            <Button variant="primary" type="submit">
+              Enviar
+            </Button>
+          </Col>
+        </Row>
       </Container>
     </div>
   );
-};
+}
 
-export default ReportsPage;
+export default AsignacionDocentesPage;

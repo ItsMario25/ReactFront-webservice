@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Navbar, Container, Button, Row, Col, Card } from 'react-bootstrap';
 import docenteImage from '../images/user.png'; 
 import leftImage from '../images/logoUnillanos.png';
@@ -6,6 +7,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/docentes.css';
 
 const DocentesPage = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('authToken'); 
+    navigate('/');
+  };
+
   return (
     <div>
       {/* Navbar */}
@@ -21,7 +29,7 @@ const DocentesPage = () => {
             />
           </Navbar.Brand>
           <Navbar.Brand href="#home" className="ml-auto">
-            <Button variant="outline-light">Salir</Button>
+            <Button variant="outline-light" onClick={handleLogout}>Salir</Button>
           </Navbar.Brand>
         </Container>
       </Navbar>

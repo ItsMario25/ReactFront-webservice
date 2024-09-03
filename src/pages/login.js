@@ -16,12 +16,12 @@ function Login() {
   const [clientId, setClientId] = useState('');
 
   useEffect(() => {
-    const storedClientId = localStorage.getItem('client_id');
+    const storedClientId = sessionStorage.getItem('client_id');
     if (storedClientId) {
       setClientId(storedClientId);
     } else {
       const newClientId = uuidv4();
-      localStorage.setItem('client_id', newClientId);
+      sessionStorage.setItem('client_id', newClientId);
       setClientId(newClientId);
     }
   }, []);
@@ -43,16 +43,20 @@ function Login() {
       const token = data.token;
       if (token) {
         sessionStorage.setItem('authToken', token);
-        console.log('Token almacenado en cache:', token);
+        //console.log('Token almacenado en cache:', token);
 
         const decodedToken = jwtDecode(token);
-        console.log(decodedToken);
+        //console.log(decodedToken);
 
         const role = decodedToken.rol_user; 
         if (role === 'docente') {
-          navigate('/docentes'); 
+          navigate('/docente'); 
         } else if (role === 'estudiante') {
           navigate('/estudiante'); 
+        } else if (role === 'secretarioacademico') {
+          navigate('/secretario_ac'); 
+        } else if (role === 'secretariotecnico') {
+          navigate('/secretario_tec'); 
         } else {
           navigate('/'); 
         }
