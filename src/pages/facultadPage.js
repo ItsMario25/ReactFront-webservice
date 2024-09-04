@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Container, Button, Row, Col, Card } from 'react-bootstrap';
+import { Navbar, Container, Button, Row, Col, Card,  Table } from 'react-bootstrap';
 import docenteImage from '../images/user.png'; 
 import leftImage from '../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';

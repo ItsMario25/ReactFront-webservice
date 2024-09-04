@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/login'; 
+import FacultadPage from './pages/facultadPage';
 import EstudiantePage from './pages/estudiantePage'; 
 import Evaluacion from './pages/evaluacion';
 import SecretarioPage from './pages/secretarioAcadPage';
@@ -14,23 +15,49 @@ import ProtectedRoute from './componentes/protected_route';
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/estudiante" element={
-          <ProtectedRoute requiredRole="estudiante">
-            <EstudiantePage />
-          </ProtectedRoute>}/>
-        <Route path="/docente" element={
-          <ProtectedRoute requiredRole="docente">
-            <Docente />
-          </ProtectedRoute>} />
-        <Route path="/encuesta_estudiante" element={<Evaluacion />} />
-        <Route path="/secretario_ac" element={<SecretarioPage />} />
-        <Route path="/secretario_tec" element={<SecretarioTPage />} />
-        <Route path="/periodo" element={<Periodo />} />
-        
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+
+      {/* Rutas de estudiante */}
+      <Route path="/estudiante" element={
+        <ProtectedRoute requiredRole="estudiante">
+          <EstudiantePage />
+        </ProtectedRoute>}/>
+      <Route path="/encuesta_estudiante" element={
+        <ProtectedRoute requiredRole="estudiante">
+          <Evaluacion />
+        </ProtectedRoute>}/>
+      
+      {/* Rutas de docente */}
+      <Route path="/docente" element={
+        <ProtectedRoute requiredRole="docente">
+          <Docente />
+        </ProtectedRoute>} />
+      
+      {/* Rutas de Secretario Academico */}
+      <Route path="/secretario_ac" element={
+        <ProtectedRoute requiredRole="secretario_academico">
+          <SecretarioPage />
+        </ProtectedRoute>}/>
+      
+      {/* Rutas de secretario Tecnico */}
+      <Route path="/secretario_tec" element={
+        <ProtectedRoute requiredRole="secretario_tecnico">
+          <SecretarioTPage />
+        </ProtectedRoute>}/>
+      <Route path="/periodo" element={
+        <ProtectedRoute requiredRole="secretario_tecnico">
+          <Periodo />
+        </ProtectedRoute>}/>
+
+      {/* Rutas de miembro de consejo de Facultad */}
+      <Route path="/consejo_fac" element={
+        <ProtectedRoute requiredRole="consejo_facultad">
+          <FacultadPage />
+        </ProtectedRoute>}/>
+
+    </Routes>
+  </Router>
   );
 }
 

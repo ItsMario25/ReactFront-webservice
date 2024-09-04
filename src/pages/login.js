@@ -46,17 +46,19 @@ function Login() {
         //console.log('Token almacenado en cache:', token);
 
         const decodedToken = jwtDecode(token);
-        //console.log(decodedToken);
+        console.log(decodedToken);
 
         const role = decodedToken.rol_user; 
-        if (role === 'docente') {
+        if (role === "docente") {
           navigate('/docente'); 
-        } else if (role === 'estudiante') {
+        } else if (role === "estudiante") {
           navigate('/estudiante'); 
-        } else if (role === 'secretarioacademico') {
+        } else if (role === "secretario_academico") {
           navigate('/secretario_ac'); 
-        } else if (role === 'secretariotecnico') {
+        } else if (role === "secretario_tecnico") {
           navigate('/secretario_tec'); 
+        } else if (role === "consejo_facultad") {
+          navigate('/consejo_fac'); 
         } else {
           navigate('/'); 
         }
