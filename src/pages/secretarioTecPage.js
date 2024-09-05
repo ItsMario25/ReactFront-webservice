@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Navbar, Container, Button, Table, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import leftImage from '../images/logoUnillanos.png';
@@ -6,7 +7,7 @@ import '../css/reporte.css';
 
 const ReportsPage = () => {
   const [reportData, setReportData] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     fetch('http://localhost:8080/periodos_evl')
       .then(response => response.json())
@@ -26,8 +27,9 @@ const ReportsPage = () => {
     const date = new Date(isoString);
     return date.toLocaleDateString('es-ES'); // Formato de fecha en español
   };
+
   const handleButtonClick = () => {
-    window.location.href = 'http://localhost:8000/periodo';
+    navigate('/periodo'); 
   };
 
   return (
@@ -56,7 +58,7 @@ const ReportsPage = () => {
         <Row className="mb-4">
           <Col>
             <div className="button-box">
-            <Button variant="primary" onClick={handleButtonClick} block="true">
+            <Button variant="primary" onClick={handleButtonClick} block="false">
               Realizar periodo de evaluación
             </Button>
             </div>
