@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar, Container, Button, Form, Row, Col } from 'react-bootstrap';
 import Calendar from 'react-calendar';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-calendar/dist/Calendar.css';
 import leftImage from '../images/logoUnillanos.png';
@@ -9,6 +10,7 @@ import '../css/periodoAcademico.css';
 const PeriodoAcademicoPage = () => {
   const [dateRange, setDateRange] = useState([new Date(), new Date()]);
   const [periodoAcademico, setPeriodoAcademico] = useState('');
+  const navigate = useNavigate();
 
   const handleDateChange = (date) => {
     setDateRange(date);
@@ -34,10 +36,10 @@ const PeriodoAcademicoPage = () => {
       if (!response.ok) {
         throw new Error('Error al cargar el periodo académico');
       }
-      alert('Periodo académico cargado con éxito');
+      
+      navigate('/secretario_tec')
     } catch (error) {
       console.error('Error:', error);
-      alert('Hubo un problema al cargar el periodo académico');
     }
   };
 
@@ -63,24 +65,27 @@ const PeriodoAcademicoPage = () => {
 
       {/* Page Content */}
       <Container style={{ marginTop: '20px' }}>
-        <Form>
-          <Row className="align-items-center">
-            <Form.Label>Periodo académico</Form.Label>
-            <Col>
-              <Form.Control
-                type="text"
-                placeholder="Ingrese el periodo académico"
-                value={periodoAcademico}
-                onChange={(e) => setPeriodoAcademico(e.target.value)}
-              />
-            </Col>
-            <Col className="text-right">
-              <Button className="button-update" variant="primary" onClick={handleSubmit}>
-                Subir
-              </Button>
-            </Col>
-          </Row>
-        </Form>
+      <Form>
+        <Row className="align-items-center">
+          <Form.Label>Periodo académico</Form.Label>
+          <Col>
+            <Form.Select
+              value={periodoAcademico}
+              onChange={(e) => setPeriodoAcademico(e.target.value)}
+            >
+              <option value="">Seleccionar periodo académico</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </Form.Select>
+          </Col>
+          <Col className="text-right">
+            <Button className="button-update" variant="primary" onClick={handleSubmit}>
+              Subir
+            </Button>
+          </Col>
+        </Row>
+      </Form>
+
 
         <div style={{ marginTop: '20px' }}>
           <h4>Seleccionar rango de fechas</h4>
