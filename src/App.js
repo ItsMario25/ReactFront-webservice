@@ -49,7 +49,11 @@ function App() {
         <ProtectedRoute requiredRole="secretario_tecnico">
           <Periodo />
         </ProtectedRoute>}/>
-
+      <Route path="/editarperiodo/:id" element={
+        <ProtectedRoute requiredRole="secretario_tecnico">
+          <Periodo />
+        </ProtectedRoute>
+      }/>
       {/* Rutas de miembro de consejo de Facultad */}
       <Route path="/consejo_fac" element={
         <ProtectedRoute requiredRole="consejo_facultad">

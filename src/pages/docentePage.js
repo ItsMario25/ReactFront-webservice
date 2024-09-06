@@ -6,6 +6,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/docentes.css';
 
 const EvaluacionDocentePage = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('authToken'); 
+    sessionStorage.removeItem('client_id'); 
+    navigate('/');
+  };
+
   return (
     <div>
       {/* Navbar */}
@@ -21,7 +29,7 @@ const EvaluacionDocentePage = () => {
             />
           </Navbar.Brand>
           <Navbar.Brand href="#home" className="ml-auto">
-            <Button variant="outline-light">Salir</Button>
+            <Button variant="outline-light" onClick={handleLogout}>Salir</Button>
           </Navbar.Brand>
         </Container>
       </Navbar>

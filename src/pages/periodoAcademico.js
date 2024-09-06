@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar, Container, Button, Form, Row, Col } from 'react-bootstrap';
-import Calendar from 'react-calendar';
 import { useNavigate } from 'react-router-dom';
+import Calendar from 'react-calendar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-calendar/dist/Calendar.css';
 import leftImage from '../images/logoUnillanos.png';
@@ -10,7 +10,29 @@ import '../css/periodoAcademico.css';
 const PeriodoAcademicoPage = () => {
   const [dateRange, setDateRange] = useState([new Date(), new Date()]);
   const [periodoAcademico, setPeriodoAcademico] = useState('');
+  const [isEdit, setIsEdit] = useState(false); // Para manejar si estamos editando o creando
+  const [existingPeriodo, setExistingPeriodo] = useState(null); // Almacenar periodo existente
   const navigate = useNavigate();
+
+  const handleReturn = () => {
+    navigate('/secretario_tec');
+  };
+
+  useEffect(() => {
+    // Verificar si hay un periodo activo para editar
+    fetch('http://localhost:8080/periodoactivo')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data && data.id_periodo_evl) {
+          setIsEdit(true); // Si hay un periodo activo, estamos en modo edición
+          setExistingPeriodo(data); // Guardamos el periodo existente
+          setPeriodoAcademico(data.id_periodo_evl); // Prellenamos el campo de periodo
+          setDateRange([new Date(data.fecha_inicio), new Date(data.fecha_final)]); // Prellenamos las fechas
+        }
+      })
+      .catch(error => console.error('Error fetching active period:', error));
+  }, []);
 
   const handleDateChange = (date) => {
     setDateRange(date);
@@ -20,13 +42,16 @@ const PeriodoAcademicoPage = () => {
     const [fechaInicio, fechaFinal] = dateRange;
     const data = {
       periodo: periodoAcademico,
-      inicio: fechaInicio.toISOString().split('T')[0], // Formateo de fecha a 'YYYY-MM-DD'
+      inicio: fechaInicio.toISOString().split('T')[0],
       fin: fechaFinal.toISOString().split('T')[0],
     };
 
     try {
-      const response = await fetch('http://localhost:8080/cargarperiodo', {
-        method: 'POST',
+      const endpoint = isEdit ? `http://localhost:8080/editarperiodo/${existingPeriodo.id_periodo_evl}` : 'http://localhost:8080/cargarperiodo';
+      const method = isEdit ? 'PUT' : 'POST'; // Cambia el método según si es edición o creación
+      console.log(data)
+      const response = await fetch(endpoint, {
+        method,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -34,12 +59,12 @@ const PeriodoAcademicoPage = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Error al cargar el periodo académico');
+        throw new Error(isEdit ? 'Error al modificar el periodo académico' : 'Error al crear el periodo académico');
       }
-      
-      navigate('/secretario_tec')
+      navigate('/secretario_tec');
     } catch (error) {
       console.error('Error:', error);
+      alert(isEdit ? 'Hubo un problema al modificar el periodo académico' : 'Hubo un problema al cargar el periodo académico');
     }
   };
 
@@ -58,34 +83,44 @@ const PeriodoAcademicoPage = () => {
             />
           </Navbar.Brand>
           <Navbar.Brand href="#home" className="ml-auto">
-            <Button variant="outline-light">Salir</Button>
+            <Button variant="outline-light" onClick={handleReturn}>Regresar</Button>
           </Navbar.Brand>
         </Container>
       </Navbar>
 
       {/* Page Content */}
       <Container style={{ marginTop: '20px' }}>
-      <Form>
-        <Row className="align-items-center">
-          <Form.Label>Periodo académico</Form.Label>
-          <Col>
-            <Form.Select
-              value={periodoAcademico}
-              onChange={(e) => setPeriodoAcademico(e.target.value)}
-            >
-              <option value="">Seleccionar periodo académico</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-            </Form.Select>
-          </Col>
-          <Col className="text-right">
-            <Button className="button-update" variant="primary" onClick={handleSubmit}>
-              Subir
-            </Button>
-          </Col>
-        </Row>
-      </Form>
-
+        <Form>
+          <Row className="align-items-center">
+            <Form.Label>Periodo académico</Form.Label>
+            <Col>
+              {isEdit ? (
+                <Form.Control
+                  type="text"
+                  placeholder="Ingrese el periodo académico"
+                  value={periodoAcademico}
+                  onChange={(e) => setPeriodoAcademico(e.target.value)}
+                  disabled
+                />
+              ) : (
+                <Form.Control
+                  as="select"
+                  value={periodoAcademico}
+                  onChange={(e) => setPeriodoAcademico(e.target.value)}
+                >
+                  <option value="">Seleccione</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                </Form.Control>
+              )}
+            </Col>
+            <Col className="text-right">
+              <Button className="button-update" variant="primary" onClick={handleSubmit}>
+                {isEdit ? 'Modificar' : 'Subir'}
+              </Button>
+            </Col>
+          </Row>
+        </Form>
 
         <div style={{ marginTop: '20px' }}>
           <h4>Seleccionar rango de fechas</h4>

@@ -11,6 +11,7 @@ const DocentesPage = () => {
 
   const handleLogout = () => {
     sessionStorage.removeItem('authToken'); 
+    sessionStorage.removeItem('client_id'); 
     navigate('/');
   };
 
