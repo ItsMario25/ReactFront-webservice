@@ -30,7 +30,7 @@ function Login() {
     e.preventDefault();
     const data = { usuario, contrasena, client_id: clientId };
 
-    fetch('http://localhost:8080/verificar', {
+    fetch('https://localhost:8080/verificar', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

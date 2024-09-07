@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Navbar, Container, Button, Row, Col, Card, Table } from 'react-bootstrap';
 import docenteImage from '../images/user.png'; 
 import leftImage from '../images/logoUnillanos.png';

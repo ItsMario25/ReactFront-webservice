@@ -1,17 +1,49 @@
-import React from 'react';
-import { Navbar, Container, Button, Row, Col, Form } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Navbar, Container, Button, Row, Col, Card, Alert } from 'react-bootstrap';
 import leftImage from '../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/docentes.css';
 
 const AsignacionDocentesPage = () => {
   const navigate = useNavigate();
+  const [cursos, setCursos] = useState([]);
+  const [isPeriodoActivo, setIsPeriodoActivo] = useState(false);
+  const [error, setError] = useState('');
 
   const handleLogout = () => {
-    sessionStorage.removeItem('authToken'); 
-    sessionStorage.removeItem('client_id'); 
+    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('client_id');
     navigate('/');
   };
+
+  // Simulación de consulta al backend para verificar si el periodo de evaluación está activo y obtener los cursos
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Realiza la solicitud para verificar si el periodo de evaluación está activo
+        const responsePeriodo = await fetch('https://localhost:8080/periodoactivo');
+        const periodoData = await responsePeriodo.json();
+
+        if (periodoData && periodoData.id_periodo_evl) {
+          setIsPeriodoActivo(true);
+        }
+        
+        if (!isPeriodoActivo) {
+          // Si no hay periodo activo, obtiene los cursos asociados a la facultad del secretario
+          const responseCursos = await fetch('https://localhost:8080/cursos_facultad');
+          const cursosData = await responseCursos.json();
+          console.log(cursosData);
+          setCursos(cursosData);
+        }
+      } catch (error) {
+        setError('Error al obtener los datos del servidor.');
+      }
+    };
+
+    fetchData();
+  }, [isPeriodoActivo]);
+
 
   return (
     <div>
@@ -37,58 +69,37 @@ const AsignacionDocentesPage = () => {
       <Container style={{ marginTop: '20px' }}>
         <Row>
           <Col>
-            <h2>Asignación de Docentes</h2>
+            <h2>Asignación de Cursos</h2>
           </Col>
         </Row>
 
-        <Row className="mt-4">
-          <Col md={4}>
-            <Form.Group controlId="docenteSelect">
-              <Form.Label>Seleccione Docente</Form.Label>
-              <Form.Control as="select">
-                <option>Docente 1</option>
-                <option>Docente 2</option>
-                <option>Docente 3</option>
-                {/* Añade más opciones según sea necesario */}
-              </Form.Control>
-            </Form.Group>
-          </Col>
+        {error && <Alert variant="danger">{error}</Alert>}
 
-          <Col md={4}>
-            <Form.Group controlId="estudianteSelect">
-              <Form.Label>Seleccione Estudiante</Form.Label>
-              <Form.Control as="select">
-                <option>Estudiante 1</option>
-                <option>Estudiante 2</option>
-                <option>Estudiante 3</option>
-                {/* Añade más opciones según sea necesario */}
-              </Form.Control>
-            </Form.Group>
-          </Col>
-
-          <Col md={4}>
-            <Form.Group controlId="cursoSelect">
-              <Form.Label>Seleccione Curso</Form.Label>
-              <Form.Control as="select">
-                <option>Curso 1</option>
-                <option>Curso 2</option>
-                <option>Curso 3</option>
-                {/* Añade más opciones según sea necesario */}
-              </Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Row className="mt-4">
-          <Col>
-            <Button variant="primary" type="submit">
-              Enviar
-            </Button>
-          </Col>
-        </Row>
+        {isPeriodoActivo ? (
+          <Row>
+            <Col>
+              <Alert variant="info">
+                Actualmente hay un periodo de evaluación activo. No se pueden asignar cursos en este momento.
+              </Alert>
+            </Col>
+          </Row>
+        ) : (
+          <Row>
+            {cursos.map((curso, index) => (
+              <Col key={index} xs={12} md={4} className="mb-4">
+                <Card>
+                  <Card.Body>
+                    <Card.Title>{curso.IDCurso}</Card.Title>
+                    <Card.Text>Facultad: {curso.NombreCurso}</Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        )}
       </Container>
     </div>
   );
-}
+};
 
 export default AsignacionDocentesPage;
