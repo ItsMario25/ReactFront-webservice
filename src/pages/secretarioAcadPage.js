@@ -28,12 +28,11 @@ const AsignacionDocentesPage = () => {
         if (periodoData && periodoData.id_periodo_evl) {
           setIsPeriodoActivo(true);
         }
-        
+
         if (!isPeriodoActivo) {
           // Si no hay periodo activo, obtiene los cursos asociados a la facultad del secretario
           const responseCursos = await fetch('https://localhost:8080/cursos_facultad');
           const cursosData = await responseCursos.json();
-          console.log(cursosData);
           setCursos(cursosData);
         }
       } catch (error) {
@@ -44,6 +43,10 @@ const AsignacionDocentesPage = () => {
     fetchData();
   }, [isPeriodoActivo]);
 
+  // Función para redirigir al hacer clic en una tarjeta
+  const handleCardClick = (idCurso) => {
+    navigate(`/asignar_curso/${idCurso}`);
+  };
 
   return (
     <div>
@@ -87,10 +90,10 @@ const AsignacionDocentesPage = () => {
           <Row>
             {cursos.map((curso, index) => (
               <Col key={index} xs={12} md={4} className="mb-4">
-                <Card>
+                <Card onClick={() => handleCardClick(curso.IDCurso)} style={{ cursor: 'pointer' }}>
                   <Card.Body>
                     <Card.Title>{curso.IDCurso}</Card.Title>
-                    <Card.Text>Facultad: {curso.NombreCurso}</Card.Text>
+                    <Card.Text>Curso: {curso.NombreCurso}</Card.Text>
                   </Card.Body>
                 </Card>
               </Col>

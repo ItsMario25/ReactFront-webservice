@@ -9,6 +9,7 @@ import SecretarioPage from './pages/secretarioAcadPage';
 import SecretarioTPage from './pages/secretarioTecPage';
 import Periodo from './pages/periodoAcademico';
 import Docente from './pages/docentePage';
+import AsignacionDocente from './pages/asignarDocente';
 import ProtectedRoute from './componentes/protected_route';
 
 
@@ -39,6 +40,10 @@ function App() {
         <ProtectedRoute requiredRole="secretario_academico">
           <SecretarioPage />
         </ProtectedRoute>}/>
+        <Route path="/asignar_curso/:id_curso" element={
+        <ProtectedRoute requiredRole="secretario_academico">
+          <AsignacionDocente />
+        </ProtectedRoute>}/>
       
       {/* Rutas de secretario Tecnico */}
       <Route path="/secretario_tec" element={
@@ -54,6 +59,7 @@ function App() {
           <Periodo />
         </ProtectedRoute>
       }/>
+
       {/* Rutas de miembro de consejo de Facultad */}
       <Route path="/consejo_fac" element={
         <ProtectedRoute requiredRole="consejo_facultad">
