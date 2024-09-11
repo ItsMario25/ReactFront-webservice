@@ -9,6 +9,7 @@ const AsignacionDocentesPage = () => {
   const navigate = useNavigate();
   const [cursos, setCursos] = useState([]);
   const [isPeriodoActivo, setIsPeriodoActivo] = useState(false);
+  const [isPeriodoAc, setIsPeriodoAc] = useState(false);
   const [error, setError] = useState('');
 
   const handleLogout = () => {
@@ -22,11 +23,17 @@ const AsignacionDocentesPage = () => {
     const fetchData = async () => {
       try {
         // Realiza la solicitud para verificar si el periodo de evaluación está activo
-        const responsePeriodo = await fetch('https://localhost:8080/periodoactivo');
-        const periodoData = await responsePeriodo.json();
+        const responsePeriodoAC = await fetch('https://localhost:8080/periodoAcactivo');
+        const periodoDataC = await responsePeriodoAC.json();
 
-        if (periodoData && periodoData.id_periodo_evl) {
-          setIsPeriodoActivo(true);
+        if (periodoDataC && periodoDataC.id_periodo_acad){
+          setIsPeriodoAc(true)
+          const responsePeriodo = await fetch('https://localhost:8080/periodoactivo');
+          const periodoData = await responsePeriodo.json();
+
+          if (periodoData && periodoData.id_periodo_evl) {
+              setIsPeriodoActivo(true);
+          } 
         }
 
         if (!isPeriodoActivo) {
@@ -69,7 +76,8 @@ const AsignacionDocentesPage = () => {
       </Navbar>
 
       {/* Page Content */}
-      <Container style={{ marginTop: '20px' }}>
+      { isPeriodoAc ? (
+        <Container style={{ marginTop: '20px' }}>
         <Row>
           <Col>
             <h2>Asignación de Cursos</h2>
@@ -101,6 +109,16 @@ const AsignacionDocentesPage = () => {
           </Row>
         )}
       </Container>
+      ) : (
+      <Row>
+        <Col>
+          <Alert variant="info">
+            Actualmente no hay un periodo academico vigente. 
+          </Alert>
+        </Col>
+      </Row>
+      )}
+      
     </div>
   );
 };
