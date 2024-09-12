@@ -14,10 +14,8 @@ const AsignarCursoPage = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('authToken');
-    sessionStorage.removeItem('client_id');
-    navigate('/');
+  const handleReturn = () => {
+    navigate('/secretario_ac');
   };
 
   // Obtener información del curso y la lista de docentes
@@ -87,7 +85,7 @@ const AsignarCursoPage = () => {
             />
           </Navbar.Brand>
           <Navbar.Brand href="#home" className="ml-auto">
-            <Button variant="outline-light" onClick={handleLogout}>Salir</Button>
+            <Button variant="outline-light" onClick={handleReturn}>Regresar</Button>
           </Navbar.Brand>
         </Container>
       </Navbar>
