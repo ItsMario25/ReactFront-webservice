@@ -90,8 +90,8 @@ const AsignacionDocentesPage = () => {
         </Container>
       </Navbar>
 
-            {/* Page Content */}
-            {isPeriodoAc ? (
+      {/* Page Content */}
+      {isPeriodoAc ? (
         <Container style={{ marginTop: '20px' }}>
           <Row>
             <Col>
