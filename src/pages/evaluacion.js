@@ -1,10 +1,14 @@
 import React from 'react';
 import { Navbar, Container, Button, Table, Form } from 'react-bootstrap';
+import { useNavigate, useLocation } from 'react-router-dom';
 import leftImage from '../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/evaluacionpage.css';
 
 const EvaluacionPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { nombreCurso, nombreDocente } = location.state || {};
   const items = [
     '1. Al iniciar el periodo académico el profesor presentó y explicó el programa del curso (descripción general del curso, contenidos temáticos, criterios de evaluaciones, metodología, bibliografía y plan de curso).',
     '2. El profesor programa y desarrolla las clases, abordando los temas con suficiente dominio y claridad.',
@@ -37,6 +41,10 @@ const EvaluacionPage = () => {
     console.log("Respuestas enviadas");
   };
 
+  const handleReturn = () => {
+    navigate('/estudiante');
+  };
+
   return (
     <div>
       {/* Navbar */}
@@ -52,14 +60,17 @@ const EvaluacionPage = () => {
             />
           </Navbar.Brand>
           <Navbar.Brand href="#home" className="ml-auto">
-            <Button variant="outline-light">Salir</Button>
+            <Button variant="outline-light" onClick={handleReturn}>Regresar</Button>
           </Navbar.Brand>
         </Container>
       </Navbar>
 
       {/* Contenido */}
       <Container style={{ marginTop: '20px' }}>
-        <h2>Evaluación del Docente</h2>
+        {/* Mostrar el nombre del docente y curso */}
+        <h2>Evaluación del Docente: {nombreDocente}</h2>
+        <h3>Curso: {nombreCurso}</h3>
+
         <Form onSubmit={handleSubmit}>
           <Table striped bordered hover>
             <thead>

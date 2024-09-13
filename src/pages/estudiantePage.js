@@ -10,12 +10,16 @@ const DocentesPage = () => {
   const navigate = useNavigate();
   const [isPeriodoActivo, setIsPeriodoActivo] = useState(false);
   const [error, setError] = useState('');
-  const [idFromServer, setIdFromServer] = useState(null);
+  const [docentesCursos, setDocentesCursos] = useState([]); // Array para almacenar los datos de docente y curso
 
   const handleLogout = () => {
     sessionStorage.removeItem('authToken'); 
     sessionStorage.removeItem('client_id'); 
     navigate('/');
+  };
+
+  const handleCardClick = (nombreCurso, nombreDocente) => {
+    navigate('/encuesta_estudiante', { state: { nombreCurso, nombreDocente } });  
   };
 
   useEffect(() => {
@@ -24,7 +28,7 @@ const DocentesPage = () => {
         // Verifica si hay un periodo de evaluación activo
         const responsePeriodo = await fetch('https://localhost:8080/periodoactivo');
         const periodoData = await responsePeriodo.json();
-        console.log(periodoData)
+        console.log(periodoData);
         if (periodoData && periodoData.id_periodo_evl) {
           setIsPeriodoActivo(true);
           const token = sessionStorage.getItem('authToken');
@@ -33,14 +37,13 @@ const DocentesPage = () => {
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`, // Enviar el token en el encabezado Authorization
-            },
-            body: JSON.stringify({ /* Puedes enviar datos adicionales aquí si es necesario */ }),
+            }
           });
 
           if (response.ok) {
             const data = await response.json();
-            console.log(data)
-            setIdFromServer(data); // Asumiendo que el servidor responde con un campo 'id'
+            console.log(data);
+            setDocentesCursos(data); // Almacenar los datos de docente y curso
           } else {
             setError('Error al obtener la respuesta del servidor.');
           }
@@ -51,7 +54,7 @@ const DocentesPage = () => {
       }
     }
     fetchData();
-  }, [isPeriodoActivo]);
+  }, []);
 
   return (
     <div>
@@ -83,16 +86,23 @@ const DocentesPage = () => {
         {error && <Alert variant="danger">{error}</Alert>}
         {isPeriodoActivo ? (
           <Row>
-            {Array.from({ length: 9 }).map((_, index) => (
-              <Col key={index} xs={12} md={4} className="mb-4">
-                <Card>
-                  <Card.Img variant="top" src={docenteImage} />
-                  <Card.Body>
-                    <Card.Title>Docente {index + 1}</Card.Title>
-                  </Card.Body>
-                </Card>
+            {docentesCursos.length > 0 ? (
+              docentesCursos.map((docenteCurso, index) => (
+                <Col key={index} xs={12} md={4} className="mb-4">
+                  <Card onClick={() => handleCardClick(docenteCurso.nombre_curso, docenteCurso.nombre_docente)}> {/* Manejar el click para redirigir */}
+                    <Card.Img variant="top" src={docenteImage} />
+                    <Card.Body>
+                      <Card.Title>{docenteCurso.nombre_docente}</Card.Title>
+                      <Card.Text>{docenteCurso.nombre_curso}</Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))
+            ) : (
+              <Col>
+                <Alert variant="info">No hay docentes asignados actualmente.</Alert>
               </Col>
-            ))}
+            )}
           </Row>
         ) : (
           <Row>
