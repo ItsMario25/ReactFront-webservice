@@ -1,5 +1,5 @@
-import React, { useEffect,  useState } from 'react';
-import { Navbar, Container, Button, Table, Form } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Navbar, Container, Button, Table, Form, Modal } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
 import leftImage from '../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,6 +9,8 @@ const EvaluacionPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [items, setItems] = useState([]);
+  const [respuestas, setRespuestas] = useState({});
+  const [showModal, setShowModal] = useState(false);
   const { nombreCurso, nombreDocente } = location.state || {};
 
   useEffect(() => {
@@ -17,17 +19,56 @@ const EvaluacionPage = () => {
       
       if (respuesta.ok) {
         const itemsrespuesta = await respuesta.json();
-        console.log(itemsrespuesta)
-        setItems(itemsrespuesta); // Almacenar los datos de docente y curso
+        setItems(itemsrespuesta);
       } 
     };
     fetchData();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleRadioChange = (index, value) => {
+    setRespuestas({
+      ...respuestas,
+      [index]: value
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí iría el manejo del envío de datos al backend.
-    console.log("Respuestas enviadas");
+    
+    // Validar que todos los ítems tengan una respuesta seleccionada
+    const allItemsSelected = items.every((_, index) => respuestas[index]);
+
+    if (!allItemsSelected) {
+      setShowModal(true); // Mostrar el modal si faltan respuestas
+      return;
+    }
+
+    // Preparar los datos para enviar
+    const dataToSend = {
+      nombreCurso,
+      nombreDocente,
+      respuestas
+    };
+
+    try {
+      const response = await fetch('https://localhost:8080/evaluacion_estudiante', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      if (response.ok) {
+        console.log('Datos enviados correctamente');
+        // Redirigir al usuario o mostrar un mensaje de éxito
+        navigate('/estudiante');
+      } else {
+        console.log('Error al enviar los datos.');
+      }
+    } catch (error) {
+      console.log('Ocurrió un error al enviar los datos.');
+    }
   };
 
   const handleReturn = () => {
@@ -80,6 +121,7 @@ const EvaluacionPage = () => {
                       type="radio"
                       name={`radio-${index}`}
                       value="nunca"
+                      onChange={() => handleRadioChange(index, 'nunca')}
                     />
                   </td>
                   <td>
@@ -87,6 +129,7 @@ const EvaluacionPage = () => {
                       type="radio"
                       name={`radio-${index}`}
                       value="algunas_veces"
+                      onChange={() => handleRadioChange(index, 'algunas_veces')}
                     />
                   </td>
                   <td>
@@ -94,6 +137,7 @@ const EvaluacionPage = () => {
                       type="radio"
                       name={`radio-${index}`}
                       value="casi_siempre"
+                      onChange={() => handleRadioChange(index, 'casi_siempre')}
                     />
                   </td>
                   <td>
@@ -101,6 +145,7 @@ const EvaluacionPage = () => {
                       type="radio"
                       name={`radio-${index}`}
                       value="siempre"
+                      onChange={() => handleRadioChange(index, 'siempre')}
                     />
                   </td>
                 </tr>
@@ -112,6 +157,20 @@ const EvaluacionPage = () => {
           </Button>
         </Form>
       </Container>
+
+      {/* Modal de alerta */}
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Advertencia</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Por favor, selecciona una opción para todos los criterios antes de enviar.</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      
     </div>
   );
 }
