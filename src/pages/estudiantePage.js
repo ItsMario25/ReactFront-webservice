@@ -5,6 +5,7 @@ import docenteImage from '../images/user.png';
 import leftImage from '../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/docentes.css';
+import { jwtDecode } from "jwt-decode";
 
 const DocentesPage = () => {
   const navigate = useNavigate();
@@ -19,7 +20,10 @@ const DocentesPage = () => {
   };
 
   const handleCardClick = (nombreCurso, nombreDocente) => {
-    navigate('/encuesta_estudiante', { state: { nombreCurso, nombreDocente } });  
+    const token = sessionStorage.getItem('authToken');
+    const decodedToken = jwtDecode(token);
+    const nombreEvaluador = decodedToken.username
+    navigate('/encuesta_estudiante', { state: { nombreCurso, nombreDocente, nombreEvaluador } });  
   };
 
   useEffect(() => {

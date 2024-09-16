@@ -11,7 +11,7 @@ const EvaluacionPage = () => {
   const [items, setItems] = useState([]);
   const [respuestas, setRespuestas] = useState({});
   const [showModal, setShowModal] = useState(false);
-  const { nombreCurso, nombreDocente } = location.state || {};
+  const { nombreCurso, nombreDocente, nombreEvaluador } = location.state || {};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +47,7 @@ const EvaluacionPage = () => {
     const dataToSend = {
       nombreCurso,
       nombreDocente,
+      nombreEvaluador,
       respuestas
     };
 
