@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Navbar, Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
@@ -15,7 +15,8 @@ function Login() {
   const [contrasena, setContrasena] = useState('');
   const [clientId, setClientId] = useState('');
 
-  useEffect(() => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const storedClientId = sessionStorage.getItem('client_id');
     if (storedClientId) {
       setClientId(storedClientId);
@@ -24,10 +25,6 @@ function Login() {
       sessionStorage.setItem('client_id', newClientId);
       setClientId(newClientId);
     }
-  }, []);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
     const data = { usuario, contrasena, client_id: clientId };
 
     fetch('https://localhost:8080/verificar', {
