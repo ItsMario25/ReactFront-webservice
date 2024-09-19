@@ -10,7 +10,9 @@ import SecretarioTPage from './pages/secretarioTecPage';
 import Periodo from './pages/periodoAcademico';
 import Docente from './pages/docentePage';
 import AsignacionDocente from './pages/asignarDocente';
+import Autoevaluacion from './pages/autoevaluacion';
 import ProtectedRoute from './componentes/protected_route';
+
 
 
 function App() {
@@ -33,6 +35,10 @@ function App() {
       <Route path="/docente" element={
         <ProtectedRoute requiredRole="docente">
           <Docente />
+        </ProtectedRoute>} />
+        <Route path="/autoevaluacion" element={
+        <ProtectedRoute requiredRole="docente">
+          <Autoevaluacion />
         </ProtectedRoute>} />
       
       {/* Rutas de Secretario Academico */}

@@ -1,13 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Navbar, Container, Button, Row, Col, Card, Table } from 'react-bootstrap';
-import docenteImage from '../images/user.png'; 
+import { Navbar, Container, Button, Row, Col, Card, Table, Alert } from 'react-bootstrap';
+import { jwtDecode } from "jwt-decode";
+import cursoImage from '../images/curso.jpg'; 
 import leftImage from '../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/docentes.css';
 
 const EvaluacionDocentePage = () => {
   const navigate = useNavigate();
+  const [isPeriodoActivo, setIsPeriodoActivo] = useState(false);
+  const [error, setError] = useState('');
+  const [Cursos, setCursos] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responsePeriodo = await fetch('https://localhost:8080/periodoactivo');
+        const periodoData = await responsePeriodo.json();
+        console.log(periodoData)
+        if (periodoData && periodoData.id_periodo_evl) {
+            setIsPeriodoActivo(true);
+            const token = sessionStorage.getItem('authToken');
+            const response = await fetch('https://localhost:8080/cursos_ejerciendo', {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // Enviar el token en el encabezado Authorization
+              }
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              console.log(data);
+              setCursos(data)
+            } else {
+              setError('Error al obtener la respuesta del servidor.');  
+            }
+        } 
+      } catch (error) {
+        setError('Error al obtener los datos del servidor.');
+      }
+    };
+
+    fetchData();
+  }, [isPeriodoActivo]);
 
   const handleLogout = () => {
     sessionStorage.removeItem('authToken'); 
@@ -15,6 +52,12 @@ const EvaluacionDocentePage = () => {
     navigate('/');
   };
 
+  const handleCardClick = (idCurso, nombrecurso) => {
+    const token = sessionStorage.getItem('authToken');
+    const decodedToken = jwtDecode(token);
+    const nombreEvaluador = decodedToken.username
+    navigate('/autoevaluacion', { state: { idCurso, nombrecurso, nombreEvaluador } });  
+  };
   return (
     <div>
       {/* Navbar */}
@@ -35,27 +78,49 @@ const EvaluacionDocentePage = () => {
         </Container>
       </Navbar>
 
+      {error && <Alert variant="danger">{error}</Alert>}
       {/* Page Content */}
-      <Container style={{ marginTop: '20px' }}>
-        <Row>
-          <Col>
-            <h2>EVALUACIÓN DOCENTE EN CURSO</h2>
-          </Col>
-        </Row>
-        <Row>
-          {Array.from({ length: 9 }).map((_, index) => (
-            <Col key={index} xs={12} md={4} className="mb-4">
-              <Card>
-                <Card.Img variant="top" src={docenteImage} />
-                <Card.Body>
-                  <Card.Title>Curso {index + 1}</Card.Title>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+      {isPeriodoActivo ? (
+            <Container style={{ marginTop: '20px' }}>
+            <Row>
+              <Col>
+                <h2>EVALUACIÓN DOCENTE EN CURSO</h2>
+              </Col>
+            </Row>
+            <Row>
+            {Cursos.length > 0 ? (
+              Cursos.map((Curso, index) => (
+                <Col key={index} xs={12} md={4} className="mb-4">
+                  <Card onClick={() => handleCardClick(Curso.IDCurso, Curso.NombreCurso)}> {/* Manejar el click para redirigir */}
+                    <Card.Img variant="top" src={cursoImage} />
+                    <Card.Body>
+                      <Card.Title>{Curso.IDCurso}</Card.Title>
+                      <Card.Text>CURSO : {Curso.NombreCurso}</Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))
+            ) : (
+              <Col>
+                <Alert variant="info">No hay docentes asignados actualmente.</Alert>
+              </Col>
+            )}
+            </Row>
+            </Container>
+          ) : (
+            <Container style={{ marginTop: '20px' }}>
+              <Row>
+                <Col>
+                  <Alert variant="info">
+                    Actualmente no hay un periodo de evaluación activo.
+                  </Alert>
+                </Col>
+              </Row>
+            </Container>
+      )}
 
         {/* Historial de Evaluaciones */}
+        <Container style={{ marginTop: '10px' }}>
         <Row>
           <Col>
             <h2>Historial de Evaluaciones</h2>
