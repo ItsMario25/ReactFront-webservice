@@ -55,8 +55,9 @@ const EvaluacionDocentePage = () => {
   const handleCardClick = (idCurso, nombrecurso) => {
     const token = sessionStorage.getItem('authToken');
     const decodedToken = jwtDecode(token);
-    const nombreEvaluador = decodedToken.username
-    navigate('/autoevaluacion', { state: { idCurso, nombrecurso, nombreEvaluador } });  
+    const nombreDocente = decodedToken.username
+    
+    navigate('/autoevaluacion', { state: { idCurso, nombrecurso, nombreDocente } });  
   };
   return (
     <div>

@@ -11,11 +11,11 @@ const EvaluacionPage = () => {
   const [items, setItems] = useState([]);
   const [respuestas, setRespuestas] = useState({});
   const [showModal, setShowModal] = useState(false);
-  const { nombreCurso, nombreDocente, nombreEvaluador } = location.state || {};
+  const { idCurso, nombrecurso, nombreDocente} = location.state || {};
 
   useEffect(() => {
     const fetchData = async () => {
-      const respuesta = await fetch('https://localhost:8080/criterios_estudiante');
+      const respuesta = await fetch('https://localhost:8080/criterios_docente');
       
       if (respuesta.ok) {
         const itemsrespuesta = await respuesta.json();
@@ -45,14 +45,13 @@ const EvaluacionPage = () => {
 
     // Preparar los datos para enviar
     const dataToSend = {
-      nombreCurso,
+      nombrecurso,
       nombreDocente,
-      nombreEvaluador,
       respuestas
     };
 
     try {
-      const response = await fetch('https://localhost:8080/evaluacion_estudiante', {
+      const response = await fetch('https://localhost:8080/evaluacion_docente', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -100,7 +99,8 @@ const EvaluacionPage = () => {
       <Container style={{ marginTop: '20px' }}>
         {/* Mostrar el nombre del docente y curso */}
         <h2>Evaluación del Docente: {nombreDocente}</h2>
-        <h3>Curso: {nombreCurso}</h3>
+        <h3> {idCurso} </h3>
+        <h3>Curso: {nombrecurso}</h3>
 
         <Form onSubmit={handleSubmit}>
           <Table striped bordered hover>
