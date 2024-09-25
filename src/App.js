@@ -12,6 +12,7 @@ import Docente from './pages/docentePage';
 import AsignacionDocente from './pages/asignarDocente';
 import Autoevaluacion from './pages/autoevaluacion';
 import ProtectedRoute from './componentes/protected_route';
+import EvaluacionFacultad from './pages/evaluacionfacultad';
 
 
 
@@ -70,7 +71,14 @@ function App() {
       <Route path="/consejo_fac" element={
         <ProtectedRoute requiredRole="consejo_facultad">
           <FacultadPage />
-        </ProtectedRoute>}/>
+        </ProtectedRoute>
+      }/>
+      
+      <Route path="/encuesta_facultad" element={
+        <ProtectedRoute requiredRole="consejo_facultad">
+          <EvaluacionFacultad />
+        </ProtectedRoute>
+      }/>
 
     </Routes>
   </Router>
