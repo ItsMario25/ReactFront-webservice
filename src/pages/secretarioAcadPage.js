@@ -49,6 +49,7 @@ const AsignacionDocentesPage = () => {
         const responseAsignados = await fetch('https://localhost:8080/cursos_asignados');
         const cursosAsignadosData = await responseAsignados.json();
         
+        
         if (cursosAsignadosData){
           console.log(cursosAsignadosData.cursos_asignados)
           setCursosAsignados(cursosAsignadosData.cursos_asignados);

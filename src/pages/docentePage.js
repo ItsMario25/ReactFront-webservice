@@ -37,6 +37,21 @@ const EvaluacionDocentePage = () => {
             } else {
               setError('Error al obtener la respuesta del servidor.');  
             }
+
+            const responsehechos = await fetch('https://localhost:8080/cursos_evaluados', {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // Enviar el token en el encabezado Authorization
+              }
+            });
+
+            if (responsehechos.ok){
+              const datah = await responsehechos.json();
+              console.log(datah)
+            }
+
+
         } 
       } catch (error) {
         setError('Error al obtener los datos del servidor.');
