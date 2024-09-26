@@ -12,6 +12,7 @@ const FacultadPage = () => {
   const [isPeriodoActivo, setIsPeriodoActivo] = useState(false);
   const [error, setError] = useState('');
   const [docentesCursos, setDocentesCursos] = useState([]); // Array para almacenar los datos de docente y curso
+  const [Evaluados, setEvaluados] = useState([]);
 
   const handleLogout = () => {
     sessionStorage.removeItem('authToken'); 
@@ -30,7 +31,7 @@ const FacultadPage = () => {
           setIsPeriodoActivo(true);
           const token = sessionStorage.getItem('authToken');
           const response = await fetch('https://localhost:8080/docentes_facultad', {
-            method: 'POST',
+            method: 'GET',
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`, // Enviar el token en el encabezado Authorization
@@ -44,6 +45,24 @@ const FacultadPage = () => {
           } else {
             setError('Error al obtener la respuesta del servidor.');
           }
+
+          const respon = await fetch('https://localhost:8080/cursos_evaluados', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`, // Enviar el token en el encabezado Authorization
+            }
+          });
+
+          if (respon.ok){
+            const datah = await respon.json();
+            console.log(datah)
+            setEvaluados(datah.cursos_evaluados)
+          } else {
+            const datah = await respon.json();
+            setEvaluados(datah || []);
+            setError('Error al obtener cursos evaluados')
+          }
         } 
 
       } catch (error) {
@@ -54,10 +73,14 @@ const FacultadPage = () => {
   }, []);
 
   const handleCardClick = (nombreCurso, nombreDocente) => {
-    const token = sessionStorage.getItem('authToken');
-    const decodedToken = jwtDecode(token);
-    const nombreEvaluador = decodedToken.username
-    navigate('/encuesta_facultad', { state: { nombreCurso, nombreDocente, nombreEvaluador } });  
+    const nn = nombreCurso
+    if (!Evaluados.includes(nn)) {
+      const token = sessionStorage.getItem('authToken');
+      const decodedToken = jwtDecode(token);
+      const nombreEvaluador = decodedToken.username
+      navigate('/encuesta_facultad', { state: { nombreCurso, nombreDocente, nombreEvaluador } }); 
+    }
+     
   };
 
   return (
@@ -94,7 +117,12 @@ const FacultadPage = () => {
             {docentesCursos.length > 0 ? (
               docentesCursos.map((docenteCurso, index) => (
                 <Col key={index} xs={12} md={4} className="mb-4">
-                  <Card onClick={() => handleCardClick(docenteCurso.nombre_curso, docenteCurso.nombre_docente)}> {/* Manejar el click para redirigir */}
+                  <Card onClick={() => handleCardClick(docenteCurso.nombre_curso, docenteCurso.nombre_docente)}
+                    style={{
+                      cursor: Evaluados.includes(docenteCurso.nombre_curso) ? 'not-allowed' : 'pointer',
+                      border: Evaluados.includes(docenteCurso.nombre_curso) ? '2px solid green' : ''
+                    }}
+                    > {/* Manejar el click para redirigir */}
                     <Card.Img variant="top" src={docenteImage} />
                     <Card.Body>
                       <Card.Title>{docenteCurso.nombre_docente}</Card.Title>

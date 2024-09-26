@@ -12,6 +12,7 @@ const EvaluacionDocentePage = () => {
   const [isPeriodoActivo, setIsPeriodoActivo] = useState(false);
   const [error, setError] = useState('');
   const [Cursos, setCursos] = useState([]);
+  const [Evaluados, setEvaluados] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +39,7 @@ const EvaluacionDocentePage = () => {
               setError('Error al obtener la respuesta del servidor.');  
             }
 
-            const responsehechos = await fetch('https://localhost:8080/cursos_evaluados', {
+            const respon = await fetch('https://localhost:8080/cursos_evaluados', {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -46,9 +47,14 @@ const EvaluacionDocentePage = () => {
               }
             });
 
-            if (responsehechos.ok){
-              const datah = await responsehechos.json();
+            if (respon.ok){
+              const datah = await respon.json();
               console.log(datah)
+              setEvaluados(datah.cursos_evaluados)
+            } else {
+              const datah = await respon.json();
+              setEvaluados(datah || []);
+              setError('Error al obtener cursos evaluados')
             }
 
 
@@ -67,12 +73,14 @@ const EvaluacionDocentePage = () => {
     navigate('/');
   };
 
-  const handleCardClick = (idCurso, nombrecurso) => {
-    const token = sessionStorage.getItem('authToken');
-    const decodedToken = jwtDecode(token);
-    const nombreDocente = decodedToken.username
-    
-    navigate('/autoevaluacion', { state: { idCurso, nombrecurso, nombreDocente } });  
+  const handleCardClick = (idCurso, Nombrecurso) => {
+    const nn = Nombrecurso
+    if (!Evaluados.includes(nn)) {
+      const token = sessionStorage.getItem('authToken');
+      const decodedToken = jwtDecode(token);
+      const nombreDocente = decodedToken.username
+      navigate('/autoevaluacion', { state: { idCurso, Nombrecurso, nombreDocente } }); 
+    }
   };
   return (
     <div>
@@ -107,7 +115,12 @@ const EvaluacionDocentePage = () => {
             {Cursos.length > 0 ? (
               Cursos.map((Curso, index) => (
                 <Col key={index} xs={12} md={4} className="mb-4">
-                  <Card onClick={() => handleCardClick(Curso.IDCurso, Curso.NombreCurso)}> {/* Manejar el click para redirigir */}
+                  <Card onClick={() => handleCardClick(Curso.IDCurso, Curso.NombreCurso)}
+                    style={{
+                      cursor: Evaluados.includes(Curso.NombreCurso) ? 'not-allowed' : 'pointer',
+                      border: Evaluados.includes(Curso.NombreCurso) ? '2px solid green' : ''
+                    }}
+                    > {/* Manejar el click para redirigir */}
                     <Card.Img variant="top" src={cursoImage} />
                     <Card.Body>
                       <Card.Title>{Curso.IDCurso}</Card.Title>

@@ -55,6 +55,10 @@ const ProtectedRoute = ({ children, requiredRole }) => {
         return <Navigate to="/" state={{ from: location }} />;
     }
 
+    if (!isValid){
+        return <Navigate to="/" state={{ from: location }} />;
+    }
+
     if (userRole !== requiredRole) {
         switch (userRole) {
             case 'docente':

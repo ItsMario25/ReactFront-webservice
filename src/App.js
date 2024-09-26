@@ -73,7 +73,6 @@ function App() {
           <FacultadPage />
         </ProtectedRoute>
       }/>
-      
       <Route path="/encuesta_facultad" element={
         <ProtectedRoute requiredRole="consejo_facultad">
           <EvaluacionFacultad />

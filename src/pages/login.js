@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar, Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode";
+//import { jwtDecode } from "jwt-decode";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { v4 as uuidv4 } from 'uuid';
 import leftImage from '../images/cyseth.jpeg';
@@ -13,19 +13,14 @@ function Login() {
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState('');
   const [contrasena, setContrasena] = useState('');
-  const [clientId, setClientId] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const storedClientId = sessionStorage.getItem('client_id');
-    if (storedClientId) {
-      setClientId(storedClientId);
-    } else {
-      const newClientId = uuidv4();
-      sessionStorage.setItem('client_id', newClientId);
-      setClientId(newClientId);
-    }
-    const data = { usuario, contrasena, client_id: clientId };
+    
+    const newClientId = uuidv4();
+    sessionStorage.setItem('client_id', newClientId);
+    
+    const data = { usuario, contrasena, client_id: newClientId };
 
     fetch('https://localhost:8080/verificar', {
       method: 'POST',
@@ -40,12 +35,8 @@ function Login() {
       const token = data.token;
       if (token) {
         sessionStorage.setItem('authToken', token);
-        //console.log('Token almacenado en cache:', token);
+        const role = data.rol; 
 
-        const decodedToken = jwtDecode(token);
-        console.log(decodedToken);
-
-        const role = decodedToken.rol_user; 
         if (role === "docente") {
           navigate('/docente'); 
         } else if (role === "estudiante") {
