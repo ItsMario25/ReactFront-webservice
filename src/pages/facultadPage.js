@@ -11,7 +11,7 @@ const FacultadPage = () => {
   const navigate = useNavigate();
   const [isPeriodoActivo, setIsPeriodoActivo] = useState(false);
   const [error, setError] = useState('');
-  const [docentesCursos, setDocentesCursos] = useState([]); // Array para almacenar los datos de docente y curso
+  const [docentes, setDocentes] = useState([]); // Array para almacenar los datos de docente y curso
   const [Evaluados, setEvaluados] = useState([]);
 
   const handleLogout = () => {
@@ -41,12 +41,12 @@ const FacultadPage = () => {
           if (response.ok) {
             const data = await response.json();
             console.log(data);
-            setDocentesCursos(data); // Almacenar los datos de docente y curso
+            setDocentes(data); // Almacenar los datos de docente y curso
           } else {
             setError('Error al obtener la respuesta del servidor.');
           }
 
-          const respon = await fetch('https://localhost:8080/cursos_evaluados', {
+          const respon = await fetch('https://localhost:8080/docentes_evaluados', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -57,11 +57,11 @@ const FacultadPage = () => {
           if (respon.ok){
             const datah = await respon.json();
             console.log(datah)
-            setEvaluados(datah.cursos_evaluados)
+            setEvaluados(datah.docentes_evaluados)
           } else {
             const datah = await respon.json();
             setEvaluados(datah || []);
-            setError('Error al obtener cursos evaluados')
+            setError('Error al obtener docentes evaluados')
           }
         } 
 
@@ -72,13 +72,13 @@ const FacultadPage = () => {
     fetchData();
   }, []);
 
-  const handleCardClick = (nombreCurso, nombreDocente) => {
-    const nn = nombreCurso
+  const handleCardClick = (nombreDocente) => {
+    const nn = nombreDocente
     if (!Evaluados.includes(nn)) {
       const token = sessionStorage.getItem('authToken');
       const decodedToken = jwtDecode(token);
       const nombreEvaluador = decodedToken.username
-      navigate('/encuesta_facultad', { state: { nombreCurso, nombreDocente, nombreEvaluador } }); 
+      navigate('/encuesta_facultad', { state: {nombreDocente, nombreEvaluador } }); 
     }
      
   };
@@ -114,19 +114,18 @@ const FacultadPage = () => {
         {error && <Alert variant="danger">{error}</Alert>}
         {isPeriodoActivo ? (
           <Row>
-            {docentesCursos.length > 0 ? (
-              docentesCursos.map((docenteCurso, index) => (
+            {docentes.length > 0 ? (
+              docentes.map((docente, index) => (
                 <Col key={index} xs={12} md={4} className="mb-4">
-                  <Card onClick={() => handleCardClick(docenteCurso.nombre_curso, docenteCurso.nombre_docente)}
+                  <Card onClick={() => handleCardClick(docente)}
                     style={{
-                      cursor: Evaluados.includes(docenteCurso.nombre_curso) ? 'not-allowed' : 'pointer',
-                      border: Evaluados.includes(docenteCurso.nombre_curso) ? '2px solid green' : ''
+                      cursor: Evaluados.includes(docente) ? 'not-allowed' : 'pointer',
+                      border: Evaluados.includes(docente) ? '2px solid green' : ''
                     }}
                     > {/* Manejar el click para redirigir */}
                     <Card.Img variant="top" src={docenteImage} />
                     <Card.Body>
-                      <Card.Title>{docenteCurso.nombre_docente}</Card.Title>
-                      <Card.Text>{docenteCurso.nombre_curso}</Card.Text>
+                      <Card.Title>{docente}</Card.Title>
                     </Card.Body>
                   </Card>
                 </Col>

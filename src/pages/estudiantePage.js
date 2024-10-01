@@ -33,7 +33,6 @@ const DocentesPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Verifica si hay un periodo de evaluación activo
         const responsePeriodo = await fetch('https://localhost:8080/periodoactivo');
         const periodoData = await responsePeriodo.json();
         console.log(periodoData);
@@ -44,14 +43,14 @@ const DocentesPage = () => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`, // Enviar el token en el encabezado Authorization
+              'Authorization': `Bearer ${token}`, 
             }
           });
 
           if (response.ok) {
             const data = await response.json();
             console.log(data);
-            setDocentesCursos(data); // Almacenar los datos de docente y curso
+            setDocentesCursos(data); 
           } else {
             setError('Error al obtener la respuesta del servidor.');
           }
@@ -60,7 +59,7 @@ const DocentesPage = () => {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`, // Enviar el token en el encabezado Authorization
+              'Authorization': `Bearer ${token}`, 
             }
           });
 

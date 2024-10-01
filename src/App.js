@@ -13,7 +13,7 @@ import AsignacionDocente from './pages/asignarDocente';
 import Autoevaluacion from './pages/autoevaluacion';
 import ProtectedRoute from './componentes/protected_route';
 import EvaluacionFacultad from './pages/evaluacionfacultad';
-
+import IngresarToken from './componentes/validacion';
 
 
 function App() {
@@ -21,6 +21,7 @@ function App() {
     <Router>
     <Routes>
       <Route path="/" element={<LoginPage />} />
+      <Route path="/ingresar-token" element={<IngresarToken />} />
 
       {/* Rutas de estudiante */}
       <Route path="/estudiante" element={

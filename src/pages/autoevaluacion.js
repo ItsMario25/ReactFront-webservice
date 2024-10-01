@@ -11,7 +11,7 @@ const EvaluacionPage = () => {
   const [items, setItems] = useState([]);
   const [respuestas, setRespuestas] = useState({});
   const [showModal, setShowModal] = useState(false);
-  const { idCurso, nombrecurso, nombreDocente} = location.state || {};
+  const { nombreDocente} = location.state || {};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,13 +45,12 @@ const EvaluacionPage = () => {
 
     // Preparar los datos para enviar
     const dataToSend = {
-      nombrecurso,
       nombreDocente,
       respuestas
     };
 
     try {
-      const response = await fetch('https://localhost:8080/evaluacion_docente', {
+      const response = await fetch('https://localhost:8080/autoevaluacion_docente', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +60,6 @@ const EvaluacionPage = () => {
 
       if (response.ok) {
         console.log('Datos enviados correctamente');
-        // Redirigir al usuario o mostrar un mensaje de éxito
         navigate('/docente');
       } else {
         console.log('Error al enviar los datos.');
@@ -99,9 +97,6 @@ const EvaluacionPage = () => {
       <Container style={{ marginTop: '20px' }}>
         {/* Mostrar el nombre del docente y curso */}
         <h2>Evaluación del Docente: {nombreDocente}</h2>
-        <h3> {idCurso} </h3>
-        <h3>Curso: {nombrecurso}</h3>
-
         <Form onSubmit={handleSubmit}>
           <Table striped bordered hover>
             <thead>

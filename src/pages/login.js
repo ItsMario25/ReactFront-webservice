@@ -34,18 +34,20 @@ function Login() {
       console.log('Success:', data);
       const token = data.token;
       if (token) {
-        sessionStorage.setItem('authToken', token);
         const role = data.rol; 
 
         if (role === "docente") {
+          sessionStorage.setItem('authToken', token);
           navigate('/docente'); 
         } else if (role === "estudiante") {
+          sessionStorage.setItem('authToken', token);
           navigate('/estudiante'); 
         } else if (role === "secretario_academico") {
-          navigate('/secretario_ac'); 
+          navigate('/ingresar-token', { state: { role, token } }); 
         } else if (role === "secretario_tecnico") {
-          navigate('/secretario_tec'); 
+          navigate('/ingresar-token', { state: { role, token } }); 
         } else if (role === "consejo_facultad") {
+          sessionStorage.setItem('authToken', token);
           navigate('/consejo_fac'); 
         } else {
           navigate('/'); 

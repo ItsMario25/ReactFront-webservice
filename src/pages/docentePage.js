@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Navbar, Container, Button, Row, Col, Card, Table, Alert } from 'react-bootstrap';
+import { Navbar, Container, Button, Row, Col, Table, Alert } from 'react-bootstrap';
 import { jwtDecode } from "jwt-decode";
-import cursoImage from '../images/curso.jpg'; 
 import leftImage from '../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/docentes.css';
@@ -12,7 +11,7 @@ const EvaluacionDocentePage = () => {
   const [isPeriodoActivo, setIsPeriodoActivo] = useState(false);
   const [error, setError] = useState('');
   const [Cursos, setCursos] = useState([]);
-  const [Evaluados, setEvaluados] = useState([]);
+  const [IsEvaluate, setEvaluate] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,28 +38,20 @@ const EvaluacionDocentePage = () => {
               setError('Error al obtener la respuesta del servidor.');  
             }
 
-            const respon = await fetch('https://localhost:8080/cursos_evaluados', {
+            const responsebool = await fetch('https://localhost:8080/ejerciendo', {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`, // Enviar el token en el encabezado Authorization
               }
             });
-
-            if (respon.ok){
-              const datah = await respon.json();
-              console.log(datah)
-              setEvaluados(datah.cursos_evaluados)
-            } else {
-              const datah = await respon.json();
-              setEvaluados(datah || []);
-              setError('Error al obtener cursos evaluados')
-            }
-
+            setEvaluate(responsebool.ok)
+            
 
         } 
       } catch (error) {
         setError('Error al obtener los datos del servidor.');
+        console.log(error)
       }
     };
 
@@ -73,15 +64,13 @@ const EvaluacionDocentePage = () => {
     navigate('/');
   };
 
-  const handleCardClick = (idCurso, Nombrecurso) => {
-    const nn = Nombrecurso
-    if (!Evaluados.includes(nn)) {
-      const token = sessionStorage.getItem('authToken');
-      const decodedToken = jwtDecode(token);
-      const nombreDocente = decodedToken.username
-      navigate('/autoevaluacion', { state: { idCurso, Nombrecurso, nombreDocente } }); 
-    }
+  const handleButtonClick = () => {
+    const token = sessionStorage.getItem('authToken');
+    const decodedToken = jwtDecode(token);
+    const nombreDocente = decodedToken.username
+    navigate('/autoevaluacion', { state: { nombreDocente } }); 
   };
+
   return (
     <div>
       {/* Navbar */}
@@ -113,25 +102,28 @@ const EvaluacionDocentePage = () => {
             </Row>
             <Row>
             {Cursos.length > 0 ? (
-              Cursos.map((Curso, index) => (
-                <Col key={index} xs={12} md={4} className="mb-4">
-                  <Card onClick={() => handleCardClick(Curso.IDCurso, Curso.NombreCurso)}
-                    style={{
-                      cursor: Evaluados.includes(Curso.NombreCurso) ? 'not-allowed' : 'pointer',
-                      border: Evaluados.includes(Curso.NombreCurso) ? '2px solid green' : ''
-                    }}
-                    > {/* Manejar el click para redirigir */}
-                    <Card.Img variant="top" src={cursoImage} />
-                    <Card.Body>
-                      <Card.Title>{Curso.IDCurso}</Card.Title>
-                      <Card.Text>CURSO : {Curso.NombreCurso}</Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))
+              <Row className="mb-4">
+                {IsEvaluate ? (
+                  <Col>
+                    <div className="button-box">
+                      <Button
+                        variant={"primary"} 
+                        onClick={handleButtonClick}
+                        block="false"
+                      >
+                        Realizar autoevaluación
+                      </Button>
+                    </div>
+                  </Col>
+                ) : (
+                  <Col>
+                    <Alert variant="info">AUTO EVALUACION REALIZADA.</Alert>
+                  </Col>
+                )}
+            </Row>
             ) : (
               <Col>
-                <Alert variant="info">No hay docentes asignados actualmente.</Alert>
+                <Alert variant="info">NO ESTA EJERCIENDO EN EL PERIODO ACTUAL.</Alert>
               </Col>
             )}
             </Row>
@@ -141,7 +133,7 @@ const EvaluacionDocentePage = () => {
               <Row>
                 <Col>
                   <Alert variant="info">
-                    Actualmente no hay un periodo de evaluación activo.
+                    ACTUALMENTE NO HAY UN PERIODO DE EVALUACIÓN ACTIVO.
                   </Alert>
                 </Col>
               </Row>

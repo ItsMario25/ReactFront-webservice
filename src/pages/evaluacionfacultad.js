@@ -11,7 +11,7 @@ const EvaluacionPage = () => {
   const [items, setItems] = useState([]);
   const [respuestas, setRespuestas] = useState({});
   const [showModal, setShowModal] = useState(false);
-  const { nombreCurso, nombreDocente, nombreEvaluador } = location.state || {};
+  const { nombreDocente, nombreEvaluador } = location.state || {};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,18 +34,14 @@ const EvaluacionPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Validar que todos los ítems tengan una respuesta seleccionada
     const allItemsSelected = items.every((_, index) => respuestas[index]);
 
     if (!allItemsSelected) {
-      setShowModal(true); // Mostrar el modal si faltan respuestas
+      setShowModal(true); 
       return;
     }
 
-    // Preparar los datos para enviar
     const dataToSend = {
-      nombreCurso,
       nombreDocente,
       nombreEvaluador,
       respuestas
@@ -62,7 +58,6 @@ const EvaluacionPage = () => {
 
       if (response.ok) {
         console.log('Datos enviados correctamente');
-        // Redirigir al usuario o mostrar un mensaje de éxito
         navigate('/consejo_fac');
       } else {
         console.log('Error al enviar los datos.');
@@ -100,7 +95,6 @@ const EvaluacionPage = () => {
       <Container style={{ marginTop: '20px' }}>
         {/* Mostrar el nombre del docente y curso */}
         <h2>Evaluación del Docente: {nombreDocente}</h2>
-        <h3>Curso: {nombreCurso}</h3>
 
         <Form onSubmit={handleSubmit}>
           <Table striped bordered hover>

@@ -10,7 +10,9 @@ const AsignarCursoPage = () => {
   const { id_curso } = useParams(); // Obtener el ID del curso desde la URL
   const [curso, setCurso] = useState({});
   const [docentes, setDocentes] = useState([]);
+  const [tipos, setTipos] = useState([]);
   const [selectedDocente, setSelectedDocente] = useState('');
+  const [selectedTipo, setSelectedTipo] = useState(''); // Nuevo estado para el tipo
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -18,21 +20,25 @@ const AsignarCursoPage = () => {
     navigate('/secretario_ac');
   };
 
-  // Obtener información del curso y la lista de docentes
+  // Obtener información del curso, docentes y tipos de contratación
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Obtener el curso por su ID
         const responseCurso = await fetch(`https://localhost:8080/curso/${id_curso}`);
         const cursoData = await responseCurso.json();
-        console.log(cursoData)
         setCurso(cursoData);
 
         // Obtener los docentes
         const responseDocentes = await fetch('https://localhost:8080/docentes');
         const docentesData = await responseDocentes.json();
-        console.log(docentesData)
         setDocentes(docentesData);
+
+        // Obtener los tipos de contratación
+        const responsetipos = await fetch('https://localhost:8080/tipos');
+        const tiposData = await responsetipos.json();
+        setTipos(tiposData);
+
       } catch (error) {
         setError('Error al obtener los datos del servidor.');
       }
@@ -46,7 +52,12 @@ const AsignarCursoPage = () => {
     setSelectedDocente(event.target.value);
   };
 
-  // Enviar la asignación del docente al curso
+  // Manejar la selección de un tipo de contratación
+  const handleSelectTipo = (event) => {
+    setSelectedTipo(event.target.value);
+  };
+
+  // Enviar la asignación del docente al curso junto con el tipo
   const handleSubmit = async () => {
     try {
       const response = await fetch(`https://localhost:8080/asignar_docente`, {
@@ -57,11 +68,13 @@ const AsignarCursoPage = () => {
         body: JSON.stringify({
           id_curso: id_curso,
           id_docente: selectedDocente,
+          id_tipo: selectedTipo, // Enviar también el tipo de docente
         }),
       });
 
       if (response.ok) {
         setSuccess('Docente asignado exitosamente al curso.');
+        navigate('/secretario_ac');
       } else {
         setError('Error al asignar el docente al curso.');
       }
@@ -116,7 +129,19 @@ const AsignarCursoPage = () => {
                 </Form.Control>
               </Form.Group>
 
-              <Button variant="primary" onClick={handleSubmit} disabled={!selectedDocente}>
+              <Form.Group controlId="selectTipo">
+                <Form.Label>Selecciona un Tipo de Docente</Form.Label>
+                <Form.Control as="select" value={selectedTipo} onChange={handleSelectTipo}>
+                  <option value="">Selecciona un tipo de docente</option>
+                  {tipos.map((tipo) => (
+                    <option key={tipo.IDTipo} value={tipo.IDTipo}>
+                      {tipo.NombreTipo}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+
+              <Button variant="primary" onClick={handleSubmit} disabled={!selectedDocente || !selectedTipo}>
                 Asignar Docente
               </Button>
             </Form>
