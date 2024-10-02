@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Navbar, Container, Button, Row, Col, Table, Alert } from 'react-bootstrap';
+import { Navbar, Container, Button, Row, Col, Table, Alert, Form } from 'react-bootstrap';
 import { jwtDecode } from "jwt-decode";
 import leftImage from '../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,6 +12,27 @@ const EvaluacionDocentePage = () => {
   const [error, setError] = useState('');
   const [Cursos, setCursos] = useState([]);
   const [IsEvaluate, setEvaluate] = useState(false);
+  const [filtroPeriodo, setFiltroPeriodo] = useState('');
+  const [filtroTipo, setFiltroTipo] = useState('');
+  const [evaluaciones, setEvaluaciones] = useState([]);
+ 
+  // Manejar los cambios en los filtros
+  const handleFiltroPeriodo = (e) => {
+    setFiltroPeriodo(e.target.value);
+  };
+
+  const handleFiltroTipo = (e) => {
+    setFiltroTipo(e.target.value);
+  };
+
+  // Filtrar los datos basados en los filtros seleccionados
+  const evaluacionesFiltradas = evaluaciones.filter((evaluacion) => {
+    const periodoAcademico = evaluacion.periodo_academico || ''; // Asignar cadena vacía si es undefined
+    const coincidePeriodo = periodoAcademico.includes(filtroPeriodo);
+    const coincideTipo = filtroTipo === '' || evaluacion.tipo_docente === filtroTipo;
+    return coincidePeriodo && coincideTipo;
+  });
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,35 +41,52 @@ const EvaluacionDocentePage = () => {
         const periodoData = await responsePeriodo.json();
         console.log(periodoData)
         if (periodoData && periodoData.id_periodo_evl) {
-            setIsPeriodoActivo(true);
-            const token = sessionStorage.getItem('authToken');
-            const response = await fetch('https://localhost:8080/cursos_ejerciendo', {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Enviar el token en el encabezado Authorization
-              }
-            });
-
-            if (response.ok) {
-              const data = await response.json();
-              console.log(data);
-              setCursos(data)
-            } else {
-              setError('Error al obtener la respuesta del servidor.');  
+          setIsPeriodoActivo(true);
+          const token = sessionStorage.getItem('authToken');
+          const response = await fetch('https://localhost:8080/cursos_ejerciendo', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`, // Enviar el token en el encabezado Authorization
             }
+          });
 
-            const responsebool = await fetch('https://localhost:8080/ejerciendo', {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Enviar el token en el encabezado Authorization
-              }
-            });
-            setEvaluate(responsebool.ok)
-            
+          if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            setCursos(data)
+          } else {
+            setError('Error al obtener la respuesta del servidor.');  
+          }
 
+          const responsebool = await fetch('https://localhost:8080/ejerciendo', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`, // Enviar el token en el encabezado Authorization
+            }
+          });
+          setEvaluate(responsebool.ok)  
         } 
+
+        const token = sessionStorage.getItem('authToken');
+        const responseval = await fetch('https://localhost:8080/reportes', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Enviar el token en el encabezado Authorization
+          }
+        });
+
+        if (responseval.ok){
+          const dataevl = await responseval.json();
+          console.log(dataevl);
+          setEvaluaciones(dataevl)
+        } else {
+          setError('Error al obtener la respuesta del servidor.');  
+        }
+        
+
       } catch (error) {
         setError('Error al obtener los datos del servidor.');
         console.log(error)
@@ -70,6 +108,46 @@ const EvaluacionDocentePage = () => {
     const nombreDocente = decodedToken.username
     navigate('/autoevaluacion', { state: { nombreDocente } }); 
   };
+
+  const handleEnviarReporte = async (periodo, vincula) => {
+    try {
+      const token = sessionStorage.getItem('authToken');
+      const response = await fetch('https://localhost:8080/reporte_individual', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Enviar el token en el encabezado Authorization
+        },
+        body: JSON.stringify({ periodo_academico: periodo, vinculacion: vincula}) // Enviar el periodo de la fila
+      });
+  
+      if (response.ok) {
+        const blob = await response.blob(); // Recibir el archivo como un blob (PDF)
+
+        // Crear una URL para el archivo PDF
+        const url = window.URL.createObjectURL(blob);
+        
+        // Crear un enlace <a> invisible para descargar el archivo
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'reporte_evaluacion.pdf'; // Nombre del archivo que se descargará
+        document.body.appendChild(a);
+        a.click();
+
+        // Limpiar la URL y remover el enlace
+        window.URL.revokeObjectURL(url);
+        a.remove();
+
+        console.log("Reporte descargado exitosamente.");
+      } else {
+        setError('Error al generar el reporte.');
+      }
+    } catch (error) {
+      setError('Error al conectarse al servidor.');
+      console.log(error);
+    }
+  };
+  
 
   return (
     <div>
@@ -142,34 +220,76 @@ const EvaluacionDocentePage = () => {
 
         {/* Historial de Evaluaciones */}
         <Container style={{ marginTop: '10px' }}>
-        <Row>
-          <Col>
-            <h2>Historial de Evaluaciones</h2>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Periodo Académico</th>
-                  <th>Fecha Finalizado</th>
-                  <th>Descripción</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>2024-1</td>
-                  <td>15/06/2024</td>
-                  <td>Evaluación del primer periodo del 2024</td>
-                </tr>
-                <tr>
-                  <td>2023-2</td>
-                  <td>20/12/2023</td>
-                  <td>Evaluación del segundo periodo del 2023</td>
-                </tr>
-                {/* Añade más filas según sea necesario */}
-              </tbody>
-            </Table>
-          </Col>
-        </Row>
-      </Container>
+          <Row>
+            <Col>
+              <h2>Historial de Evaluaciones</h2>
+
+              {/* Filtros */}
+              <Form className="mb-4">
+                <Row>
+                  <Col md={6}>
+                    <Form.Group controlId="filtroPeriodo">
+                      <Form.Label>Filtrar por Periodo Académico</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Ejemplo: 2023-1"
+                        value={filtroPeriodo}
+                        onChange={handleFiltroPeriodo}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group controlId="filtroTipo">
+                      <Form.Label>Filtrar por Tipo de Vinculacion</Form.Label>
+                      <Form.Control as="select" value={filtroTipo} onChange={handleFiltroTipo}>
+                        <option value="">Todos</option>
+                        <option value="Planta">Planta</option>
+                        <option value="Ocasional">Ocasional</option>
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Form>
+
+              {/* Tabla de Evaluaciones */}
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Periodo Académico</th>
+                    <th>Fecha Finalizado</th>
+                    <th>Tipo de Vinculacion</th>
+                    <th></th> {/* Columna vacía para el botón */}
+                  </tr>
+                </thead>
+                <tbody>
+                  {evaluacionesFiltradas.length > 0 ? (
+                    evaluacionesFiltradas.map((evaluacion, index) => (
+                      <tr key={index}>
+                        <td>{evaluacion.periodo_academico}</td>
+                        <td>{new Date(evaluacion.fecha_final).toLocaleDateString()}</td>
+                        <td>{evaluacion.tipo_docente}</td>
+                        <td>
+                          <Button
+                            variant="primary"
+                            onClick={() => handleEnviarReporte(evaluacion.periodo_academico, evaluacion.tipo_docente)}
+                          >
+                            Descargar Reporte
+                          </Button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="4" className="text-center">
+                        No se encontraron evaluaciones.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+        </Container>
     </div>
   );
 }

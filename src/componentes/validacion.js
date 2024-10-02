@@ -11,21 +11,36 @@ function IngresarToken() {
   const [tokens, setToken] = useState('');
   const { role, token } = location.state || {};
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí deberías manejar la lógica para verificar el token ingresado
-    const rol = role
-    if (rol === "secretario_academico") {
-      console.log('Token ingresado:', tokens);
-      sessionStorage.setItem('authToken', token);
-      navigate('/secretario_ac')
-    } else if (rol === "secretario_tecnico") {
-      console.log('Token ingresado:', tokens);
-      sessionStorage.setItem('authToken', token);
-      navigate('/secretario_tec')
+    
+    try {
+      const response = await fetch('https://localhost:8080/validar_token_email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({token: tokens }),
+      });
+  
+      const data = await response.json();
+      if (response.ok) {
+        // Token validado correctamente
+        if (role === "secretario_academico") {
+          sessionStorage.setItem('authToken', token);
+          navigate('/secretario_ac');
+        } else if (role === "secretario_tecnico") {
+          sessionStorage.setItem('authToken', token);
+          navigate('/secretario_tec');
+        }
+      } else {
+        // Mostrar error si el token no es válido
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error('Error al verificar el token:', error);
     }
   };
-
   return (
     <div>
       {/* Navbar */}
