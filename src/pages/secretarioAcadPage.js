@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Navbar, Container, Button, Row, Col, Card, Alert } from 'react-bootstrap';
+import { Navbar, Container, Button, Row, Col, Card, Alert, Table } from 'react-bootstrap';
 import leftImage from '../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/docentes.css';
@@ -12,6 +12,8 @@ const AsignacionDocentesPage = () => {
   const [isPeriodoActivo, setIsPeriodoActivo] = useState(false);
   const [isPeriodoAc, setIsPeriodoAc] = useState(false);
   const [error, setError] = useState('');
+  const [reportData, setReportData] = useState([]);
+
 
   const handleLogout = () => {
     sessionStorage.removeItem('authToken');
@@ -19,20 +21,32 @@ const AsignacionDocentesPage = () => {
     navigate('/');
   };
 
-  // Simulación de consulta al backend para verificar si el periodo de evaluación está activo y obtener los cursos
   useEffect(() => {
     const fetchData = async () => {
       try {
        // Realiza la solicitud para verificar si el periodo académico está activo
+        const token = sessionStorage.getItem('authToken');
+        const dataa = await fetch('https://localhost:8080/periodos_facultad', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, 
+          },
+        });
         const responsePeriodoAC = await fetch('https://localhost:8080/periodoAcactivo');
         const periodoDataC = await responsePeriodoAC.json();
+
+        if (dataa.ok){
+          const formattedData = await dataa.json();
+          console.log(formattedData)
+          setReportData(formattedData);
+        }
 
         if (periodoDataC && periodoDataC.id_periodo_acad){
           setIsPeriodoAc(true)
           // Verifica si hay un periodo de evaluación activo
           const responsePeriodo = await fetch('https://localhost:8080/periodoactivo');
           const periodoData = await responsePeriodo.json();
-          console.log(periodoData)
           if (periodoData && periodoData.id_periodo_evl) {
               setIsPeriodoActivo(true);
           } 
@@ -42,12 +56,12 @@ const AsignacionDocentesPage = () => {
           // Si no hay periodo activo, obtiene los cursos asociados a la facultad del secretario
           const responseCursos = await fetch('https://localhost:8080/cursos_facultad');
           const cursosData = await responseCursos.json();
-          console.log(cursosData)
           setCursos(cursosData);
         }
 
         const responseAsignados = await fetch('https://localhost:8080/cursos_asignados');
         const cursosAsignadosData = await responseAsignados.json();
+        
         
         
         if (cursosAsignadosData){
@@ -68,6 +82,45 @@ const AsignacionDocentesPage = () => {
   const handleCardClick = (idCurso) => {
     if (!cursosAsignados.includes(idCurso)) {
       navigate(`/asignar_curso/${idCurso}`);
+    }
+  };
+
+  const handleEnviarReporte = async (periodo) => {
+    try {
+      const token = sessionStorage.getItem('authToken');
+      const response = await fetch('https://localhost:8080/reporte_general', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, 
+        },
+        body: JSON.stringify({ periodo_academico: periodo}) 
+      });
+  
+      if (response.ok) {
+        const blob = await response.blob(); // Recibir el archivo como un blob (PDF)
+
+        // Crear una URL para el archivo PDF
+        const url = window.URL.createObjectURL(blob);
+        
+        // Crear un enlace <a> invisible para descargar el archivo
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Reporte_individual_evaluacion.pdf'; // Nombre del archivo que se descargará
+        document.body.appendChild(a);
+        a.click();
+
+        // Limpiar la URL y remover el enlace
+        window.URL.revokeObjectURL(url);
+        a.remove();
+
+        console.log("Reporte descargado exitosamente.");
+      } else {
+        setError('Error al generar el reporte.');
+      }
+    } catch (error) {
+      setError('Error al conectarse al servidor.');
+      console.log(error);
     }
   };
 
@@ -140,6 +193,37 @@ const AsignacionDocentesPage = () => {
           </Col>
         </Row>
       )}
+      {/* Reports Section */}
+      <Container style={{ marginTop: '20px' }}>
+      <h2>Historial</h2>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Periodo evaluacion</th>
+              <th>Fecha de inicio</th>
+              <th>Fecha final</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {reportData.map((report, index) => (
+              <tr key={index}>
+                <td>{report.id_periodo_evl}</td>
+                <td>{new Date(report.fecha_inicio).toLocaleDateString()}</td>
+                <td>{new Date(report.fecha_final).toLocaleDateString()}</td>
+                <td>
+                  <Button
+                    variant="primary"
+                      onClick={() => handleEnviarReporte(report.id_periodo_evl)}
+                  >
+                    Descargar Reporte
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </Container>
     </div>
   );
 };

@@ -10,8 +10,8 @@ import '../css/periodoAcademico.css';
 const PeriodoAcademicoPage = () => {
   const [dateRange, setDateRange] = useState([new Date(), new Date()]);
   const [periodoAcademico, setPeriodoAcademico] = useState('');
-  const [isEdit, setIsEdit] = useState(false); // Para manejar si estamos editando o creando
-  const [existingPeriodo, setExistingPeriodo] = useState(null); // Almacenar periodo existente
+  const [isEdit, setIsEdit] = useState(false); 
+  const [existingPeriodo, setExistingPeriodo] = useState(null); 
   const navigate = useNavigate();
 
   const handleReturn = () => {
@@ -19,7 +19,6 @@ const PeriodoAcademicoPage = () => {
   };
 
   useEffect(() => {
-    // Verificar si hay un periodo activo para editar
     fetch('https://localhost:8080/periodoactivo')
       .then(response => response.json())
       .then(data => {

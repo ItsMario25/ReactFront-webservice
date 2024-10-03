@@ -103,11 +103,11 @@ const ReportsPage = () => {
         </Row>
 
         {/* Reports Section */}
-        <h2>Reportes</h2>
+        <h2>Historial</h2>
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>Periodo académico</th>
+              <th>Periodo evaluacion</th>
               <th>Fecha de inicio</th>
               <th>Fecha final</th>
             </tr>
@@ -116,8 +116,8 @@ const ReportsPage = () => {
             {reportData.map((report, index) => (
               <tr key={index}>
                 <td>{report.id_periodo_evl}</td>
-                <td>{report.fecha_inicio}</td>
-                <td>{report.fecha_final}</td>
+                <td>{new Date(report.fecha_inicio).toLocaleDateString()}</td>
+                <td>{new Date(report.fecha_final).toLocaleDateString()}</td>
               </tr>
             ))}
           </tbody>
