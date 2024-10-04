@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Navbar, Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-//import { jwtDecode } from "jwt-decode";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { v4 as uuidv4 } from 'uuid';
 import leftImage from '../images/cyseth.jpeg';
 import rightImage from '../images/logoUnillanos.png';
 import iconImage from '../images/user.png';
+import imgLogin from '../images/imgLogin.jpg'; // Imagen de fondo
 import '../css/login.css';
 
 function Login() {
@@ -34,38 +34,38 @@ function Login() {
       console.log('Success:', data);
       const token = data.token;
       if (token) {
-        const role = data.rol; 
+        const role = data.rol;
 
         if (role === "docente") {
           sessionStorage.setItem('authToken', token);
-          navigate('/docente'); 
+          navigate('/docente');
         } else if (role === "estudiante") {
           sessionStorage.setItem('authToken', token);
-          navigate('/estudiante'); 
+          navigate('/estudiante');
         } else if (role === "secretario_academico") {
-          navigate('/ingresar-token', { state: { role, token } }); 
+          navigate('/ingresar-token', { state: { role, token } });
         } else if (role === "secretario_tecnico") {
-          navigate('/ingresar-token', { state: { role, token } }); 
+          navigate('/ingresar-token', { state: { role, token } });
         } else if (role === "consejo_facultad") {
           sessionStorage.setItem('authToken', token);
-          navigate('/consejo_fac'); 
+          navigate('/consejo_fac');
         } else {
-          navigate('/'); 
+          navigate('/');
         }
       } else {
         console.error('Token no recibido');
       }
     })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-};
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  };
 
   return (
     <div>
       {/* Navbar */}
       <Navbar bg="dark" variant="dark" style={{ height: '100px' }}>
-        <Container>
+      <Container className="d-flex justify-content-between">
           <Navbar.Brand href="#home">
             <img
               src={leftImage}
@@ -87,43 +87,62 @@ function Login() {
         </Container>
       </Navbar>
 
-      {/* Login Form */}
-      <Container className="d-flex flex-column justify-content-center align-items-center" style={{ height: 'calc(100vh - 170px)' }} >
-        <Row>
-          <Col xs={12} md={12} lg={12} className="login-form">
-            <Form onSubmit={handleSubmit}>
-              <div className="text-center">
-                <img src={iconImage} alt="User Icon" className="user-icon" />
-              </div>
-              <Form.Group controlId="formBasicEmail">
-                <Form.Label>Usuario</Form.Label>
-                <Form.Control 
-                  type="text" 
-                  placeholder="Ingrese Usuario" 
-                  value={usuario} 
-                  onChange={(e) => setUsuario(e.target.value)} 
-                />
-              </Form.Group>
+      {/* Background Image */}
+      <div 
+        style={{
+          backgroundImage: `url(${imgLogin})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          minHeight: 'calc(100vh - 100px)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        {/* Login Form */}
+        <Container className="d-flex flex-column justify-content-center align-items-center" style={{ padding: '20px', borderRadius: '10px' }}>
+          <Row>
+            <Col 
+              xs={12} 
+              md={12} 
+              lg={12} 
+              className="login-form" 
+              style={{ boxShadow: '0px 10px 40px rgba(0, 0, 0, 0.9)' }}
+            >
+              <Form onSubmit={handleSubmit}>
+                <div className="text-center">
+                  <img src={iconImage} alt="User Icon" className="user-icon" />
+                </div>
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Usuario</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    placeholder="Ingrese Usuario" 
+                    value={usuario} 
+                    onChange={(e) => setUsuario(e.target.value)} 
+                  />
+                </Form.Group>
 
-              <Form.Group controlId="formBasicPassword">
-                <Form.Label>Contraseña</Form.Label>
-                <Form.Control 
-                  type="password" 
-                  placeholder="*******" 
-                  value={contrasena} 
-                  onChange={(e) => setContrasena(e.target.value)} 
-                />
-              </Form.Group>
+                <Form.Group controlId="formBasicPassword">
+                  <Form.Label>Contraseña</Form.Label>
+                  <Form.Control 
+                    type="password" 
+                    placeholder="*******" 
+                    value={contrasena} 
+                    onChange={(e) => setContrasena(e.target.value)} 
+                  />
+                </Form.Group>
 
-              <div className="d-flex justify-content-center mt-4">
-                <Button variant="primary" type="submit">
-                  Login
-                </Button>
-              </div>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
+                <div className="d-flex justify-content-center mt-4">
+                  <Button variant="primary" type="submit">
+                    Login
+                  </Button>
+                </div>
+              </Form>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </div>
   );
 }
