@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Navbar, Container, Button, Table, Form, Modal } from 'react-bootstrap';
+import { Navbar, Container, Button, Table, Nav, Form, Modal } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
-import leftImage from '../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../css/evaluacionpage.css';
+import '../../css/evaluacionpage.css';
 
 const EvaluacionPage = () => {
   const navigate = useNavigate();
@@ -24,6 +23,12 @@ const EvaluacionPage = () => {
     };
     fetchData();
   }, []);
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('client_id');
+    navigate('/');
+  };
 
   const handleRadioChange = (index, value) => {
     setRespuestas({
@@ -72,36 +77,34 @@ const EvaluacionPage = () => {
     }
   };
 
-  const handleReturn = () => {
-    navigate('/estudiante');
-  };
-
   return (
-    <div>
-      {/* Navbar */}
-      <Navbar bg="dark" variant="dark" style={{ height: '100px' }}>
-        <Container>
-          <Navbar.Brand href="#home">
-            <img
-              src={leftImage}
-              width="145"
-              height="70"
-              className="d-inline-block align-top"
-              alt="Left logo"
-            />
-          </Navbar.Brand>
-          <Navbar.Brand href="#home" className="ml-auto">
-            <Button variant="outline-light" onClick={handleReturn}>Regresar</Button>
-          </Navbar.Brand>
-        </Container>
-      </Navbar>
+    <div className="d-flex">
+      {/* Sidebar */}
+      <div className="sidebar bg-dark text-white p-4" style={{ width: '250px', minHeight: '100vh' }}>
+        <Nav className="flex-column">
+          <h4 className="mb-4">Dashboard</h4>
+          <Button variant="outline-light" className="mb-3 w-100" onClick={() => navigate('/')}>Inicio</Button>
+          <Button variant="outline-light" className="mb-3 w-100" onClick={() => navigate('/estudiante')}>Evaluación</Button>
+          <Button variant="outline-light" className="w-100" onClick={handleLogout}>Cerrar Sesión</Button>
+        </Nav>
+      </div>
+
+
+      {/* Page Content */}
+      <div className="main-content p-4" style={{ flexGrow: 1 }}>
+        <Navbar bg="dark" variant="dark" style={{ height: '70px' }}>
+            <Container>
+              <Navbar.Brand href="#home">
+              <div style={{ color: 'white', marginLeft: 'auto', textAlign: 'left' }}>
+                <h3 style={{ fontSize: '25px', margin: '0' }}>{nombreCurso}</h3>
+                <h3 style={{ fontSize: '25px', margin: '0' }}>{nombreDocente}</h3>
+              </div>
+              </Navbar.Brand>
+            </Container>
+        </Navbar>
 
       {/* Contenido */}
       <Container style={{ marginTop: '20px' }}>
-        {/* Mostrar el nombre del docente y curso */}
-        <h2>Evaluación del Docente: {nombreDocente}</h2>
-        <h3>Curso: {nombreCurso}</h3>
-
         <Form onSubmit={handleSubmit}>
           <Table striped bordered hover>
             <thead>
@@ -116,7 +119,7 @@ const EvaluacionPage = () => {
             <tbody>
               {items.map((item, index) => (
                 <tr key={index}>
-                  <td className="text-left">{item.Nombre_criterio}</td>
+                  <td className="text-start">{item.Nombre_criterio}</td>
                   <td>
                     <Form.Check
                       type="radio"
@@ -171,7 +174,7 @@ const EvaluacionPage = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      
+      </div>
     </div>
   );
 }

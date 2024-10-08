@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Navbar, Container, Button, Table, Form, Modal } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
-import leftImage from '../images/logoUnillanos.png';
+import leftImage from '../../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../css/evaluacionpage.css';
+import '../../css/evaluacionpage.css';
 
 const EvaluacionPage = () => {
   const navigate = useNavigate();

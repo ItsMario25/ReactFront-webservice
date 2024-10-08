@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-calendar/dist/Calendar.css';
-import leftImage from '../images/logoUnillanos.png';
-import '../css/periodoAcademico.css';
+import leftImage from '../../images/logoUnillanos.png';
+import '../../css/periodoAcademico.css';
 
 const PeriodoAcademicoPage = () => {
   const [dateRange, setDateRange] = useState([new Date(), new Date()]);

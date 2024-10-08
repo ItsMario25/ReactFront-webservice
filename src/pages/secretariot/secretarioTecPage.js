@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Container, Button, Table, Row, Col, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import leftImage from '../images/logoUnillanos.png';
-import '../css/reporte.css';
+import leftImage from '../../images/logoUnillanos.png';
+import '../../css/reporte.css';
 
 const ReportsPage = () => {
   const navigate = useNavigate();

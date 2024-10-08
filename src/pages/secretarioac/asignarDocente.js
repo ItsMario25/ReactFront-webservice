@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Navbar, Container, Button, Row, Col, Form, Alert } from 'react-bootstrap';
-import leftImage from '../images/logoUnillanos.png';
+import leftImage from '../../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../css/docentes.css';
+import '../../css/docentes.css';
 
 const AsignarCursoPage = () => {
   const navigate = useNavigate();

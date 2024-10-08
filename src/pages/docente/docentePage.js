@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Container, Button, Row, Col, Table, Alert, Form } from 'react-bootstrap';
 import { jwtDecode } from "jwt-decode";
-import leftImage from '../images/logoUnillanos.png';
+import leftImage from '../../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../css/docentes.css';
+import '../../css/docentes.css';
 
 const EvaluacionDocentePage = () => {
   const navigate = useNavigate();

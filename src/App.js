@@ -2,17 +2,22 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/login'; 
-import FacultadPage from './pages/facultadPage';
-import EstudiantePage from './pages/estudiantePage'; 
-import Evaluacion from './pages/evaluacion';
-import SecretarioPage from './pages/secretarioAcadPage';
-import SecretarioTPage from './pages/secretarioTecPage';
-import Periodo from './pages/periodoAcademico';
-import Docente from './pages/docentePage';
-import AsignacionDocente from './pages/asignarDocente';
-import Autoevaluacion from './pages/autoevaluacion';
+import FacultadPage from './pages/consejo/facultadPage';
+import EvaluacionFacultad from './pages/consejo/evaluacionfacultad';
+
+import EstudiantePage from './pages/estudiante/estudiantePage'; 
+import Evaluacion from './pages/estudiante/evaluacion';
+
+import SecretarioPage from './pages/secretarioac/secretarioAcadPage';
+import AsignacionDocente from './pages/secretarioac/asignarDocente';
+
+import SecretarioTPage from './pages/secretariot/secretarioTecPage';
+import Periodo from './pages/secretariot/periodoAcademico';
+
+import Docente from './pages/docente/docentePage';
+import Autoevaluacion from './pages/docente/autoevaluacion';
+
 import ProtectedRoute from './componentes/protected_route';
-import EvaluacionFacultad from './pages/evaluacionfacultad';
 import IngresarToken from './componentes/validacion';
 
 
