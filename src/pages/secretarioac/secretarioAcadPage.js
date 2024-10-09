@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Container, Button, Row, Col, Card, Alert, Table } from 'react-bootstrap';
-import leftImage from '../../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../css/docentes.css';
+import Sidebar from '../../componentes/sidebar/sidebar_secac';
 
 const AsignacionDocentesPage = () => {
   const navigate = useNavigate();
@@ -13,13 +13,6 @@ const AsignacionDocentesPage = () => {
   const [isPeriodoAc, setIsPeriodoAc] = useState(false);
   const [error, setError] = useState('');
   const [reportData, setReportData] = useState([]);
-
-
-  const handleLogout = () => {
-    sessionStorage.removeItem('authToken');
-    sessionStorage.removeItem('client_id');
-    navigate('/');
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -125,33 +118,24 @@ const AsignacionDocentesPage = () => {
   };
 
   return (
-    <div>
-      {/* Navbar */}
-      <Navbar bg="dark" variant="dark" style={{ height: '100px' }}>
-        <Container>
-          <Navbar.Brand href="#home">
-            <img
-              src={leftImage}
-              width="145"
-              height="70"
-              className="d-inline-block align-top"
-              alt="Left logo"
-            />
-          </Navbar.Brand>
-          <Navbar.Brand href="#home" className="ml-auto">
-            <Button variant="outline-light" onClick={handleLogout}>Salir</Button>
-          </Navbar.Brand>
-        </Container>
-      </Navbar>
+    <div className="d-flex">
+      {/* Sidebar */}
+      <Sidebar />
 
+
+      {/* Main Content */}
+      <div className="main-content p-4" style={{ flexGrow: 1 }}>
+        
       {/* Page Content */}
       {isPeriodoAc ? (
         <Container style={{ marginTop: '20px' }}>
-          <Row>
-            <Col>
-              <h2>Asignación de Cursos</h2>
-            </Col>
-          </Row>
+          <Navbar bg="dark" variant="dark" style={{ height: '70px' }}>
+            <Container>
+              <Navbar.Brand href="#home">
+                ASIGNACION DE CURSOS
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
 
           {error && <Alert variant="danger">{error}</Alert>}
 
@@ -202,7 +186,7 @@ const AsignacionDocentesPage = () => {
               <th>Periodo evaluacion</th>
               <th>Fecha de inicio</th>
               <th>Fecha final</th>
-              <th></th>
+              <th>Reportes</th>
             </tr>
           </thead>
           <tbody>
@@ -216,7 +200,7 @@ const AsignacionDocentesPage = () => {
                     variant="primary"
                       onClick={() => handleEnviarReporte(report.id_periodo_evl)}
                   >
-                    Descargar Reporte
+                    Descargar
                   </Button>
                 </td>
               </tr>
@@ -224,6 +208,7 @@ const AsignacionDocentesPage = () => {
           </tbody>
         </Table>
       </Container>
+      </div>
     </div>
   );
 };

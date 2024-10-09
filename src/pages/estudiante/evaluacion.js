@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Navbar, Container, Button, Table, Nav, Form, Modal } from 'react-bootstrap';
+import { Navbar, Container, Button, Table, Form, Modal } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../css/evaluacionpage.css';
+import Sidebar from '../../componentes/sidebar/sidebar_est';
 
 const EvaluacionPage = () => {
   const navigate = useNavigate();
@@ -23,12 +24,6 @@ const EvaluacionPage = () => {
     };
     fetchData();
   }, []);
-
-  const handleLogout = () => {
-    sessionStorage.removeItem('authToken');
-    sessionStorage.removeItem('client_id');
-    navigate('/');
-  };
 
   const handleRadioChange = (index, value) => {
     setRespuestas({
@@ -80,14 +75,7 @@ const EvaluacionPage = () => {
   return (
     <div className="d-flex">
       {/* Sidebar */}
-      <div className="sidebar bg-dark text-white p-4" style={{ width: '250px', minHeight: '100vh' }}>
-        <Nav className="flex-column">
-          <h4 className="mb-4">Dashboard</h4>
-          <Button variant="outline-light" className="mb-3 w-100" onClick={() => navigate('/')}>Inicio</Button>
-          <Button variant="outline-light" className="mb-3 w-100" onClick={() => navigate('/estudiante')}>Evaluación</Button>
-          <Button variant="outline-light" className="w-100" onClick={handleLogout}>Cerrar Sesión</Button>
-        </Nav>
-      </div>
+      <Sidebar />
 
 
       {/* Page Content */}

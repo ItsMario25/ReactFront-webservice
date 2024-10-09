@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Navbar, Container, Row, Col, Card, Alert } from 'react-bootstrap';
 import docenteImage from '../../images/user.png'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Sidebar from '../../componentes/sidebar_ev';
+import Sidebar from '../../componentes/sidebar/sidebar_fac';
 import '../../css/docentes.css';
 import { jwtDecode } from "jwt-decode";
 
@@ -86,6 +86,7 @@ const FacultadPage = () => {
           </Container>
         </Navbar>
 
+        {/* Contenido */}
         <Container style={{ marginTop: '20px' }}>
           {error && <Alert variant="danger">{error}</Alert>}
           {isPeriodoActivo ? (

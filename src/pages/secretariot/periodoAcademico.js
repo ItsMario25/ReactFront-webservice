@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-calendar/dist/Calendar.css';
-import leftImage from '../../images/logoUnillanos.png';
 import '../../css/periodoAcademico.css';
+import Sidebar from '../../componentes/sidebar/sidebar_sect';
 
 const PeriodoAcademicoPage = () => {
   const [dateRange, setDateRange] = useState([new Date(), new Date()]);
@@ -13,10 +13,6 @@ const PeriodoAcademicoPage = () => {
   const [isEdit, setIsEdit] = useState(false); 
   const [existingPeriodo, setExistingPeriodo] = useState(null); 
   const navigate = useNavigate();
-
-  const handleReturn = () => {
-    navigate('/secretario_tec');
-  };
 
   useEffect(() => {
     fetch('https://localhost:8080/periodoactivo')
@@ -68,24 +64,20 @@ const PeriodoAcademicoPage = () => {
   };
 
   return (
-    <div>
-      {/* Navbar */}
-      <Navbar bg="dark" variant="dark" style={{ height: '100px' }}>
-        <Container>
-          <Navbar.Brand href="#home">
-            <img
-              src={leftImage}
-              width="145"
-              height="70"
-              className="d-inline-block align-top"
-              alt="Left logo"
-            />
-          </Navbar.Brand>
-          <Navbar.Brand href="#home" className="ml-auto">
-            <Button variant="outline-light" onClick={handleReturn}>Regresar</Button>
-          </Navbar.Brand>
-        </Container>
-      </Navbar>
+    <div className="d-flex">
+      {/* Sidebar */}
+      <Sidebar />
+
+
+      {/* Main Content */}
+      <div className="main-content p-4" style={{ flexGrow: 1 }}>
+        <Navbar bg="dark" variant="dark" style={{ height: '70px' }}>
+          <Container>
+            <Navbar.Brand href="#home">
+              PERIODO DE EVALUACION
+            </Navbar.Brand>
+          </Container>
+        </Navbar>
 
       {/* Page Content */}
       <Container style={{ marginTop: '20px' }}>
@@ -131,6 +123,7 @@ const PeriodoAcademicoPage = () => {
           />
         </div>
       </Container>
+      </div>
     </div>
   );
 };

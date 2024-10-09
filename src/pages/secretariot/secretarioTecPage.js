@@ -2,17 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Container, Button, Table, Row, Col, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import leftImage from '../../images/logoUnillanos.png';
 import '../../css/reporte.css';
+import Sidebar from '../../componentes/sidebar/sidebar_sect';
 
 const ReportsPage = () => {
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    sessionStorage.removeItem('authToken'); 
-    sessionStorage.removeItem('client_id'); 
-    navigate('/');
-  };
   
   const [reportData, setReportData] = useState([]);
   const [periodoActivo, setPeriodoActivo] = useState(null);
@@ -59,25 +53,19 @@ const ReportsPage = () => {
   };
 
   return (
-    <div>
-      {/* Navbar */}
-      <Navbar bg="dark" variant="dark" style={{ height: '100px' }}>
-        <Container>
-          <Navbar.Brand href="#home">
-            <img
-              src={leftImage}
-              width="145"
-              height="70"
-              className="d-inline-block align-top"
-              alt="Left logo"
-            />
-          </Navbar.Brand>
-          <Navbar.Brand href="#home" className="ml-auto">
-            <Button variant="outline-light" onClick={handleLogout}>Salir</Button>
-          </Navbar.Brand>
-        </Container>
-      </Navbar>
+    <div className="d-flex">
+      {/* Sidebar */}
+      <Sidebar />
 
+      {/* Main Content */}
+      <div className="main-content p-4" style={{ flexGrow: 1 }}>
+        <Navbar bg="dark" variant="dark" style={{ height: '70px' }}>
+          <Container>
+            <Navbar.Brand href="#home">
+              PERIODOS DE EVALUACION
+            </Navbar.Brand>
+          </Container>
+        </Navbar>
       {/* Page Content */}
       <Container style={{ marginTop: '20px' }}>
         {/* Conditionally show if there's an active evaluation period */}
@@ -123,6 +111,7 @@ const ReportsPage = () => {
           </tbody>
         </Table>
       </Container>
+      </div>
     </div>
   );
 };

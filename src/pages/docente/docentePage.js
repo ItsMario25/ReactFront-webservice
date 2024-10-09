@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Container, Button, Row, Col, Table, Alert, Form } from 'react-bootstrap';
 import { jwtDecode } from "jwt-decode";
-import leftImage from '../../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../css/docentes.css';
+import Sidebar from '../../componentes/sidebar/sidebar_doc';
 
 const EvaluacionDocentePage = () => {
   const navigate = useNavigate();
@@ -96,12 +96,6 @@ const EvaluacionDocentePage = () => {
     fetchData();
   }, [isPeriodoActivo]);
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('authToken'); 
-    sessionStorage.removeItem('client_id'); 
-    navigate('/');
-  };
-
   const handleButtonClick = () => {
     const token = sessionStorage.getItem('authToken');
     const decodedToken = jwtDecode(token);
@@ -150,29 +144,25 @@ const EvaluacionDocentePage = () => {
   
 
   return (
-    <div>
+    <div className="d-flex">
       {/* Navbar */}
-      <Navbar bg="dark" variant="dark" style={{ height: '100px' }}>
-        <Container>
-          <Navbar.Brand href="#home">
-            <img
-              src={leftImage}
-              width="145"
-              height="70"
-              className="d-inline-block align-top"
-              alt="Left logo"
-            />
-          </Navbar.Brand>
-          <Navbar.Brand href="#home" className="ml-auto">
-            <Button variant="outline-light" onClick={handleLogout}>Salir</Button>
-          </Navbar.Brand>
-        </Container>
-      </Navbar>
+      <Sidebar />
 
+      {/* Main content */}
+      <div className="main-content p-4" style={{ flexGrow: 1 }}>
+        <Navbar bg="dark" variant="dark" style={{ height: '70px' }}>
+        <Container>
+              <Navbar.Brand href="#home">
+              <div style={{ color: 'white', marginLeft: 'auto', textAlign: 'left' }}>
+                <h3 style={{ fontSize: '25px', margin: '0' }}>Evaluaciones</h3>
+              </div>
+              </Navbar.Brand>
+            </Container>
+        </Navbar>
       {error && <Alert variant="danger">{error}</Alert>}
       {/* Page Content */}
       {isPeriodoActivo ? (
-            <Container style={{ marginTop: '20px' }}>
+          <Container style={{ marginTop: '20px' }}>
             <Row>
               <Col>
                 <h2>EVALUACIÓN DOCENTE EN CURSO</h2>
@@ -258,7 +248,7 @@ const EvaluacionDocentePage = () => {
                     <th>Periodo Académico</th>
                     <th>Fecha Finalizado</th>
                     <th>Tipo de Vinculacion</th>
-                    <th></th> {/* Columna vacía para el botón */}
+                    <th>Reporte</th> 
                   </tr>
                 </thead>
                 <tbody>
@@ -273,7 +263,7 @@ const EvaluacionDocentePage = () => {
                             variant="primary"
                             onClick={() => handleEnviarReporte(evaluacion.periodo_academico, evaluacion.tipo_docente)}
                           >
-                            Descargar Reporte
+                            Descargar
                           </Button>
                         </td>
                       </tr>
@@ -290,6 +280,7 @@ const EvaluacionDocentePage = () => {
             </Col>
           </Row>
         </Container>
+        </div>
     </div>
   );
 }

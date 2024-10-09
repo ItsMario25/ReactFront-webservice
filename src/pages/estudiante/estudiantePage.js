@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Navbar, Container, Row, Button, Col, Nav, Card, Alert } from 'react-bootstrap';
+import { Navbar, Container, Row, Col, Card, Alert } from 'react-bootstrap';
 import docenteImage from '../../images/user.png'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../css/docentes.css';
 import { jwtDecode } from "jwt-decode";
+import Sidebar from '../../componentes/sidebar/sidebar_est';
 
 const DocentesPage = () => {
   const navigate = useNavigate();
@@ -21,12 +22,6 @@ const DocentesPage = () => {
       const nombreEvaluador = decodedToken.username
       navigate('/encuesta_estudiante', { state: { nombreCurso, nombreDocente, nombreEvaluador } });  
     }
-  };
-
-  const handleLogout = () => {
-    sessionStorage.removeItem('authToken');
-    sessionStorage.removeItem('client_id');
-    navigate('/');
   };
 
   useEffect(() => {
@@ -83,14 +78,7 @@ const DocentesPage = () => {
   return (
     <div className="d-flex">
       {/* Sidebar */}
-      <div className="sidebar bg-dark text-white p-4" style={{ width: '250px', minHeight: '100vh' }}>
-        <Nav className="flex-column">
-          <h4 className="mb-4">Dashboard</h4>
-          <Button variant="outline-light" className="mb-3 w-100" onClick={() => navigate('/')}>Inicio</Button>
-          <Button variant="outline-light" className="mb-3 w-100" onClick={() => navigate('/estudiante')}>Evaluación</Button>
-          <Button variant="outline-light" className="w-100" onClick={handleLogout}>Cerrar Sesión</Button>
-        </Nav>
-      </div>
+      <Sidebar /> 
 
       {/* Page Content */}
       <div className="main-content p-4" style={{ flexGrow: 1 }}>

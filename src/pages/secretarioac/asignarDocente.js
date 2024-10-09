@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Navbar, Container, Button, Row, Col, Form, Alert } from 'react-bootstrap';
-import leftImage from '../../images/logoUnillanos.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../css/docentes.css';
+import Sidebar from '../../componentes/sidebar/sidebar_secac';
 
 const AsignarCursoPage = () => {
   const navigate = useNavigate();
@@ -15,10 +15,6 @@ const AsignarCursoPage = () => {
   const [selectedTipo, setSelectedTipo] = useState(''); // Nuevo estado para el tipo
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
-  const handleReturn = () => {
-    navigate('/secretario_ac');
-  };
 
   // Obtener información del curso, docentes y tipos de contratación
   useEffect(() => {
@@ -84,33 +80,23 @@ const AsignarCursoPage = () => {
   };
 
   return (
-    <div>
-      {/* Navbar */}
-      <Navbar bg="dark" variant="dark" style={{ height: '100px' }}>
-        <Container>
-          <Navbar.Brand href="#home">
-            <img
-              src={leftImage}
-              width="145"
-              height="70"
-              className="d-inline-block align-top"
-              alt="Left logo"
-            />
-          </Navbar.Brand>
-          <Navbar.Brand href="#home" className="ml-auto">
-            <Button variant="outline-light" onClick={handleReturn}>Regresar</Button>
-          </Navbar.Brand>
-        </Container>
-      </Navbar>
+    <div className="d-flex">
+      {/* Sidebar */}
+      <Sidebar />
 
+      <div className="main-content p-4" style={{ flexGrow: 1 }}>
+        <Navbar bg="dark" variant="dark" style={{ height: '70px' }}>
+          <Container>
+            <Navbar.Brand href="#home">
+              <div style={{ color: 'white', marginLeft: 'auto', textAlign: 'left' }}>
+                <h3 style={{ fontSize: '25px', margin: '0' }}>Asignar Docente al Curso: {curso.NombreCurso}</h3>
+              </div>
+            </Navbar.Brand>
+          </Container>
+        </Navbar>
+        
       {/* Page Content */}
       <Container style={{ marginTop: '20px' }}>
-        <Row>
-          <Col>
-            <h2>Asignar Docente al Curso: {curso.NombreCurso}</h2>
-          </Col>
-        </Row>
-
         {error && <Alert variant="danger">{error}</Alert>}
         {success && <Alert variant="success">{success}</Alert>}
 
@@ -148,6 +134,7 @@ const AsignarCursoPage = () => {
           </Col>
         </Row>
       </Container>
+      </div>
     </div>
   );
 };

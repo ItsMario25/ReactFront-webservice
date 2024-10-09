@@ -12,10 +12,10 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="sidebar bg-dark text-white p-4" style={{ width: '250px', height: '100vh' }}>
+    <div className="sidebar bg-dark text-white p-4" style={{ width: '250px', minHeight: '100vh' }}>
       <Nav className="flex-column">
       <h4 className="mb-4">Dashboard</h4>
-        <Button variant="outline-light" className="mb-3 w-100" onClick={() => navigate('/')}>Inicio</Button>
+        <Button variant="outline-light" className="mb-3 w-100" onClick={() => navigate('/main_facultad')}>Inicio</Button>
         <Button variant="outline-light" className="mb-3 w-100" onClick={() => navigate('/consejo_fac')}>Evaluación</Button>
         <Button variant="outline-light" className="w-100" onClick={handleLogout}>Cerrar Sesión</Button>
       </Nav>

@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Navbar, Container, Form, Button, Row, Col } from 'react-bootstrap';
 import leftImage from '../images/cyseth.jpeg'; // Asegúrate de usar la ruta correcta
 import rightImage from '../images/logoUnillanos.png'; // Asegúrate de usar la ruta correcta
+import imgLogin from '../images/imgLogin.jpg'; 
 
 function IngresarToken() {
   const navigate = useNavigate();
@@ -28,10 +29,10 @@ function IngresarToken() {
         // Token validado correctamente
         if (role === "secretario_academico") {
           sessionStorage.setItem('authToken', token);
-          navigate('/secretario_ac');
+          navigate('/main_secretario_ac');
         } else if (role === "secretario_tecnico") {
           sessionStorage.setItem('authToken', token);
-          navigate('/secretario_tec');
+          navigate('/main_secretario_tec');
         }
       } else {
         // Mostrar error si el token no es válido
@@ -67,13 +68,34 @@ function IngresarToken() {
         </Container>
       </Navbar>
 
+      <div 
+        style={{
+          backgroundImage: `url(${imgLogin})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          minHeight: 'calc(100vh - 100px)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
       {/* Formulario de Ingreso de Token */}
       <Container className="d-flex flex-column justify-content-center align-items-center" style={{ height: 'calc(100vh - 170px)' }}>
         <Row>
-          <Col xs={12} md={12} lg={12}>
+          <Col 
+            xs={12} 
+            md={12} 
+            lg={12} 
+            style={{ 
+              boxShadow: '0px 10px 40px rgba(0, 0, 0, 0.9)', 
+              backgroundColor: '#001f3f', // Azul oscuro
+              padding: '30px', // Añadir padding para separar el contenido del borde
+              borderRadius: '10px' // Para un diseño más suave en los bordes
+            }}
+          >
             <Form onSubmit={handleSubmit}>
               <Form.Group controlId="formBasicToken">
-                <Form.Label>Ingrese el token enviado a su correo</Form.Label>
+                <Form.Label style={{ color: 'white' }}>Ingrese el token enviado a su correo</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Token"
@@ -90,6 +112,8 @@ function IngresarToken() {
           </Col>
         </Row>
       </Container>
+
+      </div>
     </div>
   );
 }
