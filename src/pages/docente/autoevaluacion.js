@@ -19,6 +19,7 @@ const EvaluacionPage = () => {
       
       if (respuesta.ok) {
         const itemsrespuesta = await respuesta.json();
+        console.log(itemsrespuesta)
         setItems(itemsrespuesta);
       } 
     };
@@ -101,7 +102,7 @@ const EvaluacionPage = () => {
             <tbody>
               {items.map((item, index) => (
                 <tr key={index}>
-                  <td className="text-left">{item.Nombre_criterio}</td>
+                  <td className="text-start">{item.Nombre_criterio}</td>
                   <td>
                     <Form.Check
                       type="radio"

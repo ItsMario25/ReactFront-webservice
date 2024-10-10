@@ -17,6 +17,7 @@ const Sidebar = () => {
             <h4 className="mb-4">Dashboard</h4>
             <Button variant="outline-light" className="mb-3 w-100" onClick={() => navigate('/main_secretario_tec')}>Inicio</Button>
             <Button variant="outline-light" className="mb-3 w-100" onClick={() => navigate('/secretario_tec')}>Periodos</Button>
+            <Button variant="outline-light" className="mb-3 w-100" onClick={() => navigate('/configuracion_seguridad')}>Seguridad</Button>
             <Button variant="outline-light" className="w-100" onClick={handleLogout}>Cerrar Sesión</Button>
         </Nav>
     </div>

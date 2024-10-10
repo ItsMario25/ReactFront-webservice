@@ -18,6 +18,7 @@ import MainSecretaioAc from './pages/secretarioac/secretarioacmain';
 import SecretarioTPage from './pages/secretariot/secretarioTecPage';
 import Periodo from './pages/secretariot/periodoAcademico';
 import MainSecretaioTec from './pages/secretariot/secretarioTecMain';
+import SecurityPage from './pages/secretariot/config_seguridad'
 
 import Docente from './pages/docente/docentePage';
 import Autoevaluacion from './pages/docente/autoevaluacion';
@@ -104,6 +105,11 @@ function App() {
       <Route path="/main_secretario_tec" element={
         <ProtectedRoute requiredRole="secretario_tecnico">
           <MainSecretaioTec />
+        </ProtectedRoute>
+      }/>
+      <Route path="/configuracion_seguridad" element={
+        <ProtectedRoute requiredRole="secretario_tecnico">
+          <SecurityPage />
         </ProtectedRoute>
       }/>
 
