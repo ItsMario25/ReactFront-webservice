@@ -136,7 +136,7 @@ const AsignacionDocentesPage = () => {
               </Navbar.Brand>
             </Container>
           </Navbar>
-
+          <Container style={{ marginTop: '20px' }}>
           {error && <Alert variant="danger">{error}</Alert>}
 
           {isPeriodoActivo ? (
@@ -167,6 +167,7 @@ const AsignacionDocentesPage = () => {
               ))}
             </Row>
           )}
+          </Container>
         </Container>
       ) : (
         <Row>
@@ -177,6 +178,7 @@ const AsignacionDocentesPage = () => {
           </Col>
         </Row>
       )}
+      
       {/* Reports Section */}
       <Container style={{ marginTop: '20px' }}>
       <h2>Historial</h2>
