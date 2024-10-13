@@ -82,7 +82,9 @@ function Login() {
   return (
     <div>
       {/* Navbar */}
-      <Navbar bg="dark" variant="dark" style={{ height: '130px' }}>
+      <Navbar bg="dark" variant="dark" style={{ 
+                                          height: '130px' ,
+                                          boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.5)' }}>
       <Container className="d-flex justify-content-between">
           <Navbar.Brand href="#home">
             <img
@@ -125,11 +127,17 @@ function Login() {
               md={12} 
               lg={12} 
               className="login-form" 
-              style={{ boxShadow: '0px 10px 40px rgba(0, 0, 0, 0.9)' }}
+              style={{ boxShadow: '10px 10px 40px rgba(0, 0, 0, 0.9)' }}
             >
               <Form onSubmit={handleSubmit}>
                 <div className="text-center">
-                  <img src={iconImage} alt="User Icon" className="user-icon" />
+                <img 
+                  src={iconImage} 
+                  alt="User Icon" 
+                  className="user-icon" 
+                  style={{ width: '100px', height: '100px' }}  // Ajusta el tamaño de la imagen
+                />
+                  {/*<p className="font-weight-bold" style={{ fontSize: '2rem' }}>PROSSED</p>*/}
                 </div>
                 <Form.Group controlId="formBasicEmail">
                   <Form.Label>Usuario</Form.Label>

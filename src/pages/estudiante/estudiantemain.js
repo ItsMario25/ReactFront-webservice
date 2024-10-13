@@ -19,8 +19,12 @@ const MainEstudiantePage = () => {
                 </Navbar>
 
                 {/* Contenido */}
-                <Container style={{ marginTop: '20px' }}>
-
+                <Container style={{ marginTop: '80px' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                    <span style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign: 'center' }}>
+                    INICIO - ROL: ESTUDIANTE - PREGRADO
+                    </span>
+                </div>
                 </Container>
             </div>
         </div>

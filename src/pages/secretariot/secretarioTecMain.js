@@ -19,8 +19,12 @@ const MainSecretaioTecPage = () => {
                 </Navbar>
 
                 {/* Contenido */}
-                <Container style={{ marginTop: '20px' }}>
-
+                <Container style={{ marginTop: '80px' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                    <span style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign: 'center' }}>
+                    INICIO - ROL: SECRETARIO TECNICO DE EVALUACION - PREGRADO
+                    </span>
+                </div>
                 </Container>
             </div>
         </div>

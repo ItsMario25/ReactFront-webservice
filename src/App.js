@@ -14,6 +14,7 @@ import MainEstudiante from './pages/estudiante/estudiantemain'
 import SecretarioPage from './pages/secretarioac/secretarioAcadPage';
 import AsignacionDocente from './pages/secretarioac/asignarDocente';
 import MainSecretaioAc from './pages/secretarioac/secretarioacmain';
+import HistorialSecretario from './pages/secretarioac/historialgeneral';
 
 import SecretarioTPage from './pages/secretariot/secretarioTecPage';
 import Periodo from './pages/secretariot/periodoAcademico';
@@ -83,6 +84,11 @@ function App() {
       <Route path="/main_secretario_ac" element={
         <ProtectedRoute requiredRole="secretario_academico">
           <MainSecretaioAc />
+        </ProtectedRoute>
+      }/>
+      <Route path="/historial_secretario" element={
+        <ProtectedRoute requiredRole="secretario_academico">
+          <HistorialSecretario />
         </ProtectedRoute>
       }/>
       

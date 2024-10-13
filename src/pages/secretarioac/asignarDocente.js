@@ -100,11 +100,11 @@ const AsignarCursoPage = () => {
         {error && <Alert variant="danger">{error}</Alert>}
         {success && <Alert variant="success">{success}</Alert>}
 
-        <Row className="mt-4">
-          <Col xs={12} md={6}>
-            <Form>
+        <Form>
+          <Row className="mt-4">
+            <Col xs={12} md={6}>
               <Form.Group controlId="selectDocente">
-                <Form.Label>Selecciona un Docente</Form.Label>
+                <Form.Label>Docente</Form.Label>
                 <Form.Control as="select" value={selectedDocente} onChange={handleSelectDocente}>
                   <option value="">Selecciona un docente</option>
                   {docentes.map((docente) => (
@@ -114,11 +114,13 @@ const AsignarCursoPage = () => {
                   ))}
                 </Form.Control>
               </Form.Group>
+            </Col>
 
+            <Col xs={12} md={6}>
               <Form.Group controlId="selectTipo">
-                <Form.Label>Selecciona un Tipo de Docente</Form.Label>
+                <Form.Label>Tipo de Vinculacion</Form.Label>
                 <Form.Control as="select" value={selectedTipo} onChange={handleSelectTipo}>
-                  <option value="">Selecciona un tipo de docente</option>
+                  <option value="">Selecciona un tipo de Vinculacion</option>
                   {tipos.map((tipo) => (
                     <option key={tipo.IDTipo} value={tipo.IDTipo}>
                       {tipo.NombreTipo}
@@ -126,14 +128,20 @@ const AsignarCursoPage = () => {
                   ))}
                 </Form.Control>
               </Form.Group>
+            </Col>
+          </Row>
 
+          {/* Centrar el botón en una fila nueva */}
+          <Row className="justify-content-center mt-4">
+            <Col xs="auto">
               <Button variant="primary" onClick={handleSubmit} disabled={!selectedDocente || !selectedTipo}>
                 Asignar Docente
               </Button>
-            </Form>
-          </Col>
-        </Row>
+            </Col>
+          </Row>
+        </Form>
       </Container>
+
       </div>
     </div>
   );
