@@ -64,6 +64,17 @@ function Login() {
             } else {
               if (role === "secretario_academico" || role === "secretario_tecnico") {
                 navigate('/ingresar-token', { state: { role, token } });
+              } else  if (role === "docente") {
+                sessionStorage.setItem('authToken', token);
+                navigate('/main_docente');
+              } else if (role === "estudiante") {
+                sessionStorage.setItem('authToken', token);
+                navigate('/main_estudiante');
+              } else if (role === "consejo_facultad") {
+                sessionStorage.setItem('authToken', token);
+                navigate('/main_facultad');
+              } else {
+                navigate('/');
               }
             }
           } else {
