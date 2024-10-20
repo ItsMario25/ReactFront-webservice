@@ -4,6 +4,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../css/evaluacionpage.css';
 import Sidebar from '../../componentes/sidebar/sidebar_doc';
+import Footer from '../../componentes/footer';
+
 
 const EvaluacionPage = () => {
   const navigate = useNavigate();
@@ -71,7 +73,8 @@ const EvaluacionPage = () => {
   };
 
   return (
-    <div className="d-flex">
+    <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+      <div className="d-flex flex-grow-1">
       {/* Navbar */}
       <Sidebar />
 
@@ -158,6 +161,9 @@ const EvaluacionPage = () => {
         </Modal.Footer>
       </Modal>
       </div>
+    </div>
+    {/* Footer */}
+    <Footer />
     </div>
   );
 }

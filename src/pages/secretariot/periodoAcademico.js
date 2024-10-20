@@ -6,6 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-calendar/dist/Calendar.css';
 import '../../css/periodoAcademico.css';
 import Sidebar from '../../componentes/sidebar/sidebar_sect';
+import Footer from '../../componentes/footer';
+
 
 const PeriodoAcademicoPage = () => {
   const [dateRange, setDateRange] = useState([new Date(), new Date()]);
@@ -64,7 +66,8 @@ const PeriodoAcademicoPage = () => {
   };
 
   return (
-    <div className="d-flex">
+    <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+      <div className="d-flex flex-grow-1">
       {/* Sidebar */}
       <Sidebar />
 
@@ -125,6 +128,9 @@ const PeriodoAcademicoPage = () => {
       </Container>
       </div>
     </div>
+    {/* Footer */}
+    <Footer />
+  </div>
   );
 };
 

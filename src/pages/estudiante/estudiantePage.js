@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../css/docentes.css';
 import { jwtDecode } from "jwt-decode";
 import Sidebar from '../../componentes/sidebar/sidebar_est';
+import Footer from '../../componentes/footer';
 
 const DocentesPage = () => {
   const navigate = useNavigate();
@@ -76,59 +77,63 @@ const DocentesPage = () => {
   }, []);
 
   return (
-    <div className="d-flex">
-      {/* Sidebar */}
-      <Sidebar /> 
+    <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+      <div className="d-flex flex-grow-1">
+        {/* Sidebar */}
+        <Sidebar /> 
 
-      {/* Page Content */}
-      <div className="main-content p-4" style={{ flexGrow: 1 }}>
-        <Navbar bg="dark" variant="dark" style={{ height: '70px' }}>
-            <Container>
-              <Navbar.Brand href="#home">
-                DOCENTES A EVALUAR
-              </Navbar.Brand>
-            </Container>
-        </Navbar>
-        <Container style={{ marginTop: '20px' }}>
-          {error && <Alert variant="danger">{error}</Alert>}
-          {isPeriodoActivo ? (
-            <Row>
-              {docentesCursos.length > 0 ? (
-                docentesCursos.map((docenteCurso, index) => (
-                  <Col key={index} xs={12} md={4} className="mb-4">
-                    <Card onClick={() => handleCardClick(docenteCurso.nombre_curso, docenteCurso.nombre_docente)}
-                      style={{
-                        cursor: Evaluados.includes(docenteCurso.nombre_curso) ? 'not-allowed' : 'pointer',
-                        border: Evaluados.includes(docenteCurso.nombre_curso) ? '2px solid green' : '',
-                        width: '250px',  
-                        height: '360px', 
-                      }}
-                      > {/* Manejar el click para redirigir */}
-                      <Card.Img variant="top" src={docenteImage} />
-                      <Card.Body>
-                        <Card.Title>{docenteCurso.nombre_docente}</Card.Title>
-                        <Card.Text>{docenteCurso.nombre_curso}</Card.Text>
-                      </Card.Body>
-                    </Card>
+        {/* Page Content */}
+        <div className="main-content p-4" style={{ flexGrow: 1 }}>
+          <Navbar bg="dark" variant="dark" style={{ height: '70px' }}>
+              <Container>
+                <Navbar.Brand href="#home">
+                  DOCENTES A EVALUAR
+                </Navbar.Brand>
+              </Container>
+          </Navbar>
+          <Container style={{ marginTop: '20px' }}>
+            {error && <Alert variant="danger">{error}</Alert>}
+            {isPeriodoActivo ? (
+              <Row>
+                {docentesCursos.length > 0 ? (
+                  docentesCursos.map((docenteCurso, index) => (
+                    <Col key={index} xs={12} md={4} className="mb-4">
+                      <Card onClick={() => handleCardClick(docenteCurso.nombre_curso, docenteCurso.nombre_docente)}
+                        style={{
+                          cursor: Evaluados.includes(docenteCurso.nombre_curso) ? 'not-allowed' : 'pointer',
+                          border: Evaluados.includes(docenteCurso.nombre_curso) ? '2px solid green' : '',
+                          width: '250px',  
+                          height: '360px', 
+                        }}
+                        > {/* Manejar el click para redirigir */}
+                        <Card.Img variant="top" src={docenteImage} />
+                        <Card.Body>
+                          <Card.Title>{docenteCurso.nombre_docente}</Card.Title>
+                          <Card.Text>{docenteCurso.nombre_curso}</Card.Text>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))
+                ) : (
+                  <Col>
+                    <Alert variant="info">No hay docentes asignados actualmente.</Alert>
                   </Col>
-                ))
-              ) : (
-                <Col>
-                  <Alert variant="info">No hay docentes asignados actualmente.</Alert>
-                </Col>
-              )}
-            </Row>
-          ) : (
-            <Row>
-                <Col>
-                  <Alert variant="info">
-                    Actualmente no hay un periodo de evaluación activo.
-                  </Alert>
-                </Col>
+                )}
               </Row>
-          )}
-        </Container>
+            ) : (
+              <Row>
+                  <Col>
+                    <Alert variant="info">
+                      Actualmente no hay un periodo de evaluación activo.
+                    </Alert>
+                  </Col>
+                </Row>
+            )}
+          </Container>
+        </div>
       </div>
+    {/* Footer */}
+    <Footer />
     </div>
   );
 }

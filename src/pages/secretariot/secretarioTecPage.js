@@ -4,6 +4,8 @@ import { Navbar, Container, Button, Table, Row, Col, Alert } from 'react-bootstr
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../css/reporte.css';
 import Sidebar from '../../componentes/sidebar/sidebar_sect';
+import Footer from '../../componentes/footer';
+
 
 const ReportsPage = () => {
   const navigate = useNavigate();
@@ -53,7 +55,8 @@ const ReportsPage = () => {
   };
 
   return (
-    <div className="d-flex">
+    <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+      <div className="d-flex flex-grow-1">
       {/* Sidebar */}
       <Sidebar />
 
@@ -113,6 +116,9 @@ const ReportsPage = () => {
       </Container>
       </div>
     </div>
+    {/* Footer */}
+    <Footer />
+  </div>
   );
 };
 

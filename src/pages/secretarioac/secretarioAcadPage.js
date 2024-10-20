@@ -4,6 +4,7 @@ import { Navbar, Container, Row, Col, Card, Alert} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../css/docentes.css';
 import Sidebar from '../../componentes/sidebar/sidebar_secac';
+import Footer from '../../componentes/footer';
 
 const AsignacionDocentesPage = () => {
   const navigate = useNavigate();
@@ -62,67 +63,71 @@ const AsignacionDocentesPage = () => {
   };
 
   return (
-    <div className="d-flex">
-      {/* Sidebar */}
-      <Sidebar />
+    <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+      <div className="d-flex flex-grow-1">
+        {/* Sidebar */}
+        <Sidebar />
 
 
-      {/* Main Content */}
-      <div className="main-content p-4" style={{ flexGrow: 1 }}>
-        
-      {/* Page Content */}
-      {isPeriodoAc ? (
-        <Container style={{ marginTop: '20px' }}>
-          <Navbar bg="dark" variant="dark" style={{ height: '70px' }}>
-            <Container>
-              <Navbar.Brand href="#home">
-                ASIGNACION DE CURSOS
-              </Navbar.Brand>
-            </Container>
-          </Navbar>
+        {/* Main Content */}
+        <div className="main-content p-4" style={{ flexGrow: 1 }}>
+          
+        {/* Page Content */}
+        {isPeriodoAc ? (
           <Container style={{ marginTop: '20px' }}>
-          {error && <Alert variant="danger">{error}</Alert>}
+            <Navbar bg="dark" variant="dark" style={{ height: '70px' }}>
+              <Container>
+                <Navbar.Brand href="#home">
+                  ASIGNACION DE CURSOS
+                </Navbar.Brand>
+              </Container>
+            </Navbar>
+            <Container style={{ marginTop: '20px' }}>
+            {error && <Alert variant="danger">{error}</Alert>}
 
-          {isPeriodoActivo ? (
-            <Row>
-              <Col>
-                <Alert variant="info">
-                  Actualmente hay un periodo de evaluación activo. No se pueden asignar cursos en este momento.
-                </Alert>
-              </Col>
-            </Row>
-          ) : (
-            <Row>
-              {cursos.map((curso, index) => (
-                <Col key={index} xs={12} md={4} className="mb-4">
-                  <Card
-                    onClick={() => handleCardClick(curso.IDCurso)}
-                    style={{
-                      cursor: cursosAsignados.includes(curso.IDCurso) ? 'not-allowed' : 'pointer',
-                      border: cursosAsignados.includes(curso.IDCurso) ? '2px solid red' : ''
-                    }}
-                  >
-                    <Card.Body>
-                      <Card.Title>{curso.IDCurso}</Card.Title>
-                      <Card.Text>Curso: {curso.NombreCurso}</Card.Text>
-                    </Card.Body>
-                  </Card>
+            {isPeriodoActivo ? (
+              <Row>
+                <Col>
+                  <Alert variant="info">
+                    Actualmente hay un periodo de evaluación activo. No se pueden asignar cursos en este momento.
+                  </Alert>
                 </Col>
-              ))}
-            </Row>
-          )}
+              </Row>
+            ) : (
+              <Row>
+                {cursos.map((curso, index) => (
+                  <Col key={index} xs={12} md={4} className="mb-4">
+                    <Card
+                      onClick={() => handleCardClick(curso.IDCurso)}
+                      style={{
+                        cursor: cursosAsignados.includes(curso.IDCurso) ? 'not-allowed' : 'pointer',
+                        border: cursosAsignados.includes(curso.IDCurso) ? '2px solid red' : ''
+                      }}
+                    >
+                      <Card.Body>
+                        <Card.Title>{curso.IDCurso}</Card.Title>
+                        <Card.Text>Curso: {curso.NombreCurso}</Card.Text>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            )}
+            </Container>
           </Container>
-        </Container>
-      ) : (
-        <Row>
-          <Col>
-            <Alert variant="info">
-              Actualmente no hay un periodo académico vigente.
-            </Alert>
-          </Col>
-        </Row>
-      )}
+        ) : (
+          <Row>
+            <Col>
+              <Alert variant="info">
+                Actualmente no hay un periodo académico vigente.
+              </Alert>
+            </Col>
+          </Row>
+        )}
+        </div>
       </div>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

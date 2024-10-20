@@ -1,10 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Container } from 'react-bootstrap';
 import Sidebar from '../../componentes/sidebar/sidebar_est';
+import Footer from '../../componentes/footer';
 
 const MainEstudiantePage = () => {
     return (
-        <div className="d-flex">
+        <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+            <div className="d-flex flex-grow-1">
             {/* Sidebar */}
             <Sidebar />
 
@@ -28,7 +30,10 @@ const MainEstudiantePage = () => {
                 </Container>
             </div>
         </div>
-    )
-}
+        {/* Footer */}
+        <Footer />
+    </div>
+    );
+};
 
 export default MainEstudiantePage;

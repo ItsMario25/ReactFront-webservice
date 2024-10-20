@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../css/docentes.css';
 import Sidebar from '../../componentes/sidebar/sidebar_doc';
+import Footer from '../../componentes/footer';
 
 const EvaluacionDocentePage = () => {
   const navigate = useNavigate();
@@ -144,7 +145,8 @@ const EvaluacionDocentePage = () => {
   
 
   return (
-    <div className="d-flex">
+    <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+      <div className="d-flex flex-grow-1">
       {/* Navbar */}
       <Sidebar />
 
@@ -281,6 +283,9 @@ const EvaluacionDocentePage = () => {
           </Row>
         </Container>
         </div>
+      </div>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

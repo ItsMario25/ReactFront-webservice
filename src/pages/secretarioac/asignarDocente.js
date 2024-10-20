@@ -4,6 +4,7 @@ import { Navbar, Container, Button, Row, Col, Form, Alert } from 'react-bootstra
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../css/docentes.css';
 import Sidebar from '../../componentes/sidebar/sidebar_secac';
+import Footer from '../../componentes/footer';
 
 const AsignarCursoPage = () => {
   const navigate = useNavigate();
@@ -80,69 +81,73 @@ const AsignarCursoPage = () => {
   };
 
   return (
-    <div className="d-flex">
-      {/* Sidebar */}
-      <Sidebar />
+    <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+      <div className="d-flex flex-grow-1">
+        {/* Sidebar */}
+        <Sidebar />
 
-      <div className="main-content p-4" style={{ flexGrow: 1 }}>
-        <Navbar bg="dark" variant="dark" style={{ height: '70px' }}>
-          <Container>
-            <Navbar.Brand href="#home">
-              <div style={{ color: 'white', marginLeft: 'auto', textAlign: 'left' }}>
-                <h3 style={{ fontSize: '25px', margin: '0' }}>Asignar Docente al Curso: {curso.NombreCurso}</h3>
-              </div>
-            </Navbar.Brand>
-          </Container>
-        </Navbar>
-        
-      {/* Page Content */}
-      <Container style={{ marginTop: '20px' }}>
-        {error && <Alert variant="danger">{error}</Alert>}
-        {success && <Alert variant="success">{success}</Alert>}
+        <div className="main-content p-4" style={{ flexGrow: 1 }}>
+          <Navbar bg="dark" variant="dark" style={{ height: '70px' }}>
+            <Container>
+              <Navbar.Brand href="#home">
+                <div style={{ color: 'white', marginLeft: 'auto', textAlign: 'left' }}>
+                  <h3 style={{ fontSize: '25px', margin: '0' }}>Asignar Docente al Curso: {curso.NombreCurso}</h3>
+                </div>
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+          
+        {/* Page Content */}
+        <Container style={{ marginTop: '20px' }}>
+          {error && <Alert variant="danger">{error}</Alert>}
+          {success && <Alert variant="success">{success}</Alert>}
 
-        <Form>
-          <Row className="mt-4">
-            <Col xs={12} md={6}>
-              <Form.Group controlId="selectDocente">
-                <Form.Label>Docente</Form.Label>
-                <Form.Control as="select" value={selectedDocente} onChange={handleSelectDocente}>
-                  <option value="">Selecciona un docente</option>
-                  {docentes.map((docente) => (
-                    <option key={docente.IdDocente} value={docente.IdDocente}>
-                      {docente.Nombre}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
-            </Col>
+          <Form>
+            <Row className="mt-4">
+              <Col xs={12} md={6}>
+                <Form.Group controlId="selectDocente">
+                  <Form.Label>Docente</Form.Label>
+                  <Form.Control as="select" value={selectedDocente} onChange={handleSelectDocente}>
+                    <option value="">Selecciona un docente</option>
+                    {docentes.map((docente) => (
+                      <option key={docente.IdDocente} value={docente.IdDocente}>
+                        {docente.Nombre}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Form.Group>
+              </Col>
 
-            <Col xs={12} md={6}>
-              <Form.Group controlId="selectTipo">
-                <Form.Label>Tipo de Vinculacion</Form.Label>
-                <Form.Control as="select" value={selectedTipo} onChange={handleSelectTipo}>
-                  <option value="">Selecciona un tipo de Vinculacion</option>
-                  {tipos.map((tipo) => (
-                    <option key={tipo.IDTipo} value={tipo.IDTipo}>
-                      {tipo.NombreTipo}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
-            </Col>
-          </Row>
+              <Col xs={12} md={6}>
+                <Form.Group controlId="selectTipo">
+                  <Form.Label>Tipo de Vinculacion</Form.Label>
+                  <Form.Control as="select" value={selectedTipo} onChange={handleSelectTipo}>
+                    <option value="">Selecciona un tipo de Vinculacion</option>
+                    {tipos.map((tipo) => (
+                      <option key={tipo.IDTipo} value={tipo.IDTipo}>
+                        {tipo.NombreTipo}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
 
-          {/* Centrar el botón en una fila nueva */}
-          <Row className="justify-content-center mt-4">
-            <Col xs="auto">
-              <Button variant="primary" onClick={handleSubmit} disabled={!selectedDocente || !selectedTipo}>
-                Asignar Docente
-              </Button>
-            </Col>
-          </Row>
-        </Form>
-      </Container>
+            {/* Centrar el botón en una fila nueva */}
+            <Row className="justify-content-center mt-4">
+              <Col xs="auto">
+                <Button variant="primary" onClick={handleSubmit} disabled={!selectedDocente || !selectedTipo}>
+                  Asignar Docente
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        </Container>
 
+        </div>
       </div>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

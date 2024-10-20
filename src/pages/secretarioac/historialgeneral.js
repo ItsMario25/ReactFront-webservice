@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Container, Button, Table } from 'react-bootstrap';
 import Sidebar from '../../componentes/sidebar/sidebar_secac';
+import Footer from '../../componentes/footer';
+
 
 const HistorialGeneralPage = () => {
   const [reportData, setReportData] = useState([]);
@@ -73,54 +75,58 @@ const HistorialGeneralPage = () => {
   };
 
   return (
-    <div className="d-flex">
-      {/* Sidebar */}
-      <Sidebar />
+    <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+      <div className="d-flex flex-grow-1">
+        {/* Sidebar */}
+        <Sidebar />
 
-      {/* Main Content */}
-      <div className="main-content p-4" style={{ flexGrow: 1 }}>
-        {/* Page Content */}
-        <Container style={{ marginTop: '20px' }}>
-        <Navbar bg="dark" variant="dark" style={{ height: '70px' }}>
-          <Container>
-            <Navbar.Brand href="#home">
-              HISTORIAL DE EVALUACIONES
-            </Navbar.Brand>
+        {/* Main Content */}
+        <div className="main-content p-4" style={{ flexGrow: 1 }}>
+          {/* Page Content */}
+          <Container style={{ marginTop: '20px' }}>
+          <Navbar bg="dark" variant="dark" style={{ height: '70px' }}>
+            <Container>
+              <Navbar.Brand href="#home">
+                HISTORIAL DE EVALUACIONES
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
           </Container>
-        </Navbar>
-        </Container>
-        {/* Reports Section */}
-        <Container style={{ marginTop: '20px' }}>
-          {error && <p className="text-danger">{error}</p>}
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Periodo evaluación</th>
-                <th>Fecha de inicio</th>
-                <th>Fecha final</th>
-                <th>Reportes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {reportData.map((report, index) => (
-                <tr key={index}>
-                  <td>{report.id_periodo_evl}</td>
-                  <td>{new Date(report.fecha_inicio).toLocaleDateString()}</td>
-                  <td>{new Date(report.fecha_final).toLocaleDateString()}</td>
-                  <td>
-                    <Button
-                      variant="primary"
-                      onClick={() => handleEnviarReporte(report.id_periodo_evl)}
-                    >
-                      Descargar
-                    </Button>
-                  </td>
+          {/* Reports Section */}
+          <Container style={{ marginTop: '20px' }}>
+            {error && <p className="text-danger">{error}</p>}
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Periodo evaluación</th>
+                  <th>Fecha de inicio</th>
+                  <th>Fecha final</th>
+                  <th>Reportes</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Container>
+              </thead>
+              <tbody>
+                {reportData.map((report, index) => (
+                  <tr key={index}>
+                    <td>{report.id_periodo_evl}</td>
+                    <td>{new Date(report.fecha_inicio).toLocaleDateString()}</td>
+                    <td>{new Date(report.fecha_final).toLocaleDateString()}</td>
+                    <td>
+                      <Button
+                        variant="primary"
+                        onClick={() => handleEnviarReporte(report.id_periodo_evl)}
+                      >
+                        Descargar
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Container>
+        </div>
       </div>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

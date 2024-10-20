@@ -1,7 +1,10 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Navbar, Container, Form, Card } from 'react-bootstrap';
-import Sidebar from '../../componentes/sidebar/sidebar_sect';
 import { useState, useEffect } from 'react';
+import { Navbar, Container, Form, Card } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Sidebar from '../../componentes/sidebar/sidebar_sect';
+import Footer from '../../componentes/footer';
+
+
 
 const ConfigSecurityPage = () => {
     // Estado para los switches
@@ -50,7 +53,8 @@ const ConfigSecurityPage = () => {
     };
 
     return (
-        <div className="d-flex">
+        <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+            <div className="d-flex flex-grow-1">
             {/* Sidebar */}
             <Sidebar />
 
@@ -98,6 +102,9 @@ const ConfigSecurityPage = () => {
                 </Container>
             </div>
         </div>
+        {/* Footer */}
+        <Footer />
+    </div>
     );
 }
 
