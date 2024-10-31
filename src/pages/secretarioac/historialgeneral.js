@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Container, Button, Table } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
 import Sidebar from '../../componentes/sidebar/sidebar_secac';
 import Footer from '../../componentes/footer';
 
 
 const HistorialGeneralPage = () => {
+  
+  const location = useLocation();
   const [reportData, setReportData] = useState([]);
   const [error, setError] = useState('');
+  const { nombrePrograma } = location.state || {};
 
   // Función para obtener los datos
   useEffect(() => {
@@ -45,7 +49,7 @@ const HistorialGeneralPage = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, 
         },
-        body: JSON.stringify({ periodo_academico: periodo }) 
+        body: JSON.stringify({ periodo_academico: periodo, nombre_programa:nombrePrograma }) 
       });
 
       if (response.ok) {

@@ -60,7 +60,7 @@ const Sidebar = () => {
           {!isCollapsed && <span>Cursos</span>}
         </Button>
 
-        <Button variant="outline-light" className="mb-3 w-100 d-flex align-items-center" onClick={() => navigate('/historial_secretario')}>
+        <Button variant="outline-light" className="mb-3 w-100 d-flex align-items-center" onClick={() => navigate('/programas')}>
           <FaCalendarAlt className="icon" style={{ minWidth: '30px' }} />
           {!isCollapsed && <span>Historial de Reportes</span>}
         </Button>
