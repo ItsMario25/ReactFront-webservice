@@ -53,24 +53,24 @@ const HistorialGeneralPage = () => {
       });
 
       if (response.ok) {
-        console.log(response.json)
-      //  const blob = await response.blob(); // Recibir el archivo como un blob (PDF)
+        
+        const blob = await response.blob(); // Recibir el archivo como un blob (PDF)
 
-        // Crear una URL para el archivo PDF
-      //  const url = window.URL.createObjectURL(blob);
+        //  Crear una URL para el archivo PDF
+        const url = window.URL.createObjectURL(blob);
         
         // Crear un enlace <a> invisible para descargar el archivo
-      //  const a = document.createElement('a');
-      //  a.href = url;
-      //  a.download = 'Reporte_individual_evaluacion.pdf'; // Nombre del archivo que se descargará
-      //  document.body.appendChild(a);
-      //  a.click();
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Reporte_general_evaluacion.pdf'; // Nombre del archivo que se descargará
+        document.body.appendChild(a);
+        a.click();
 
         // Limpiar la URL y remover el enlace
-      //  window.URL.revokeObjectURL(url);
-      //  a.remove();
+        window.URL.revokeObjectURL(url);
+        a.remove();
 
-      //  console.log("Reporte descargado exitosamente.");
+        console.log("Reporte descargado exitosamente.");
       } else {
         setError('Error al generar el reporte.');
       }
