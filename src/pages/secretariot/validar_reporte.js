@@ -65,36 +65,47 @@ const Validar_reporte = () => {
                             <Navbar.Brand href="#home">VALIDAR REPORTE</Navbar.Brand>
                         </Container>
                     </Navbar>
-                    <Container style={{ marginTop: '20px' }}>
-                        <Form onSubmit={handleSubmit} style={{ width: 'fit-content' }}>
+                    <Container style={{ marginTop: '20px' }} className="d-flex justify-content-center">
+                        <Form onSubmit={handleSubmit} style={{ width: 'fit-content' }} className="mx-auto">
                             <Form.Group controlId="formFile" className="mb-3">
-                                <Form.Label>Subir documento PDF</Form.Label>
-                                <div
-                                    className="drop-area"
-                                    onDrop={handleDrop}
-                                    onDragOver={handleDragOver}
-                                >
-                                    {file ? (
-                                        <p>{file.name}</p>
-                                    ) : (
-                                        <p>Arrastra y suelta tu archivo aquí o haz clic para seleccionar</p>
-                                    )}
-                                    <Form.Control
-                                        type="file"
-                                        accept=".pdf"
-                                        onChange={handleFileChange}
-                                        style={{ display: 'none' }} // Ocultar el input
+                            <Form.Label>Subir documento PDF</Form.Label>
+                            <div
+                                className="drop-area"
+                                onDrop={handleDrop}
+                                onDragOver={handleDragOver}
+                                style={{
+                                border: '2px dashed #007bff',
+                                padding: '20px',
+                                textAlign: 'center',
+                                borderRadius: '10px',
+                                }}
+                            >
+                                {file ? (
+                                <p>{file.name}</p>
+                                ) : (
+                                <p>Arrastra y suelta tu archivo aquí o haz clic para seleccionar</p>
+                                )}
+                                <Form.Control
+                                    type="file"
+                                    accept=".pdf"
+                                    onChange={handleFileChange}
+                                    style={{ display: 'none' }} // Ocultar el input
                                     />
-                                    <Button variant="primary" type="button" onClick={() => document.getElementById('formFile').click()}>
-                                        Seleccionar archivo
-                                    </Button>
-                                </div>
+                                <Button
+                                    variant="primary"
+                                    type="button"
+                                    onClick={() => document.getElementById('formFile').click()}
+                                    >
+                                    Seleccionar archivo
+                                </Button>
+                            </div>
                             </Form.Group>
                             <Button variant="primary" type="submit" disabled={!file}>
-                                Enviar
+                            Enviar
                             </Button>
                         </Form>
                     </Container>
+
 
                     <Container style={{ marginTop: '20px' }}>
                         {error && <div className="alert alert-danger">{error}</div>}
