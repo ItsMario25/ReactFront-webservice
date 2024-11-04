@@ -20,7 +20,8 @@ import Programas from './pages/secretarioac/historialPrograma';
 import SecretarioTPage from './pages/secretariot/secretarioTecPage';
 import Periodo from './pages/secretariot/periodoAcademico';
 import MainSecretaioTec from './pages/secretariot/secretarioTecMain';
-import SecurityPage from './pages/secretariot/config_seguridad'
+import SecurityPage from './pages/secretariot/config_seguridad';
+import VerificarReporte from './pages/secretariot/validar_reporte';
 
 import Docente from './pages/docente/docentePage';
 import Autoevaluacion from './pages/docente/autoevaluacion';
@@ -124,7 +125,11 @@ function App() {
           <SecurityPage />
         </ProtectedRoute>
       }/>
-
+      <Route path="/verificacion_reporte" element={
+        <ProtectedRoute requiredRole="secretario_tecnico">
+          <VerificarReporte />
+        </ProtectedRoute>
+      }/>
 
       {/* Rutas de miembro de consejo de Facultad */}
       <Route path="/consejo_fac" element={

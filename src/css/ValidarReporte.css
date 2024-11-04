@@ -1,0 +1,13 @@
+.drop-area {
+    border: 2px dashed #007bff;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 10px;
+    cursor: pointer;
+    background-color: #f8f9fa;
+}
+
+.drop-area p {
+    margin: 0;
+}
