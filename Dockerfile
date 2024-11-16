@@ -1,18 +1,19 @@
 # Establecer la imagen base
-FROM node:latest AS build
+FROM node:20.11.0-alpine AS build
 
 
 # Definir el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copiar el package.json y el package-lock.json
-COPY package*.json ./
-
-# Instalar las dependencias
-RUN npm install
-
 # Copiar todo el código fuente
 COPY . .
+
+# Instalar las dependencias
+RUN npm install -g npm@latest
+
+RUN npm install
+
+ENV PATH /app/node_modules/.bin:$PATH
 
 # Construir la aplicación para producción
 RUN npm run build
