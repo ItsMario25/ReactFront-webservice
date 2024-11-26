@@ -22,14 +22,14 @@ function Login() {
     sessionStorage.setItem('client_id', newClientId);
   
     // Primero realiza el fetch para verificar el switch
-    fetch('https://localhost:8080/switch_seguridad')  // Endpoint que retorna los valores guardados
+    fetch('http://localhost:8081/switch_seguridad')  // Endpoint que retorna los valores guardados
       .then(response => response.json())
       .then(datae => {
         console.log(datae);
 
         const data = { usuario, contrasena, client_id: newClientId };
     
-        fetch('https://localhost:8080/verificar', {
+        fetch('http://localhost:8081/verificar', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

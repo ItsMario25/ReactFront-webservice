@@ -38,13 +38,13 @@ const EvaluacionDocentePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responsePeriodo = await fetch('https://localhost:8080/periodoactivo');
+        const responsePeriodo = await fetch('http://localhost:8081/periodoactivo');
         const periodoData = await responsePeriodo.json();
         console.log(periodoData)
         if (periodoData && periodoData.id_periodo_evl) {
           setIsPeriodoActivo(true);
           const token = sessionStorage.getItem('authToken');
-          const response = await fetch('https://localhost:8080/cursos_ejerciendo', {
+          const response = await fetch('http://localhost:8081/cursos_ejerciendo', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const EvaluacionDocentePage = () => {
             setError('Error al obtener la respuesta del servidor.');  
           }
 
-          const responsebool = await fetch('https://localhost:8080/ejerciendo', {
+          const responsebool = await fetch('http://localhost:8081/ejerciendo', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ const EvaluacionDocentePage = () => {
         } 
 
         const token = sessionStorage.getItem('authToken');
-        const responseval = await fetch('https://localhost:8080/reportes', {
+        const responseval = await fetch('http://localhost:8081/reportes', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ const EvaluacionDocentePage = () => {
   const handleEnviarReporte = async (periodo, vincula) => {
     try {
       const token = sessionStorage.getItem('authToken');
-      const response = await fetch('https://localhost:8080/reporte_individual', {
+      const response = await fetch('http://localhost:8081/reporte_individual', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -17,7 +17,7 @@ const ProtectedRoute = ({ children, requiredRole }) => {
 
             const data = { rol: requiredRole, client_id: clientId };
             try {
-                const response = await fetch('https://localhost:8080/validar_token', {
+                const response = await fetch('http://localhost:8081/validar_token', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

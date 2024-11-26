@@ -17,7 +17,7 @@ const PeriodoAcademicoPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('https://localhost:8080/periodoactivo')
+    fetch('http://localhost:8081/periodoactivo')
       .then(response => response.json())
       .then(data => {
         console.log(data);
@@ -44,7 +44,7 @@ const PeriodoAcademicoPage = () => {
     };
 
     try {
-      const endpoint = isEdit ? `https://localhost:8080/editarperiodo/${existingPeriodo.id_periodo_evl}` : 'https://localhost:8080/cargarperiodo';
+      const endpoint = isEdit ? `http://localhost:8081/editarperiodo/${existingPeriodo.id_periodo_evl}` : 'https://localhost:8081/cargarperiodo';
       const method = isEdit ? 'PUT' : 'POST'; // Cambia el método según si es edición o creación
       console.log(data)
       const response = await fetch(endpoint, {

@@ -17,7 +17,7 @@ const HistorialGeneralPage = () => {
     const fetchData = async () => {
       try {
         const token = sessionStorage.getItem('authToken');
-        const response = await fetch('https://localhost:8080/periodos_facultad', {
+        const response = await fetch('http://localhost:8081/periodos_facultad', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ const HistorialGeneralPage = () => {
   const handleEnviarReporte = async (periodo) => {
     try {
       const token = sessionStorage.getItem('authToken');
-      const response = await fetch('https://localhost:8080/reporte_general', {
+      const response = await fetch('http://localhost:8081/reporte_general', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

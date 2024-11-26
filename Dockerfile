@@ -11,6 +11,9 @@ COPY . .
 # Instalar las dependencias
 RUN npm install -g npm@latest
 
+RUN npm install
+
+
 ENV PATH /app/node_modules/.bin:$PATH
 
 # Construir la aplicación para producción

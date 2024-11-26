@@ -16,7 +16,7 @@ function IngresarToken() {
     e.preventDefault();
     
     try {
-      const response = await fetch('https://localhost:8080/validar_token_email', {
+      const response = await fetch('http://localhost:8081/validar_token_email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

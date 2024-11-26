@@ -28,13 +28,13 @@ const DocentesPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responsePeriodo = await fetch('https://localhost:8080/periodoactivo');
+        const responsePeriodo = await fetch('http://localhost:8081/periodoactivo');
         const periodoData = await responsePeriodo.json();
         console.log(periodoData);
         if (periodoData && periodoData.id_periodo_evl) {
           setIsPeriodoActivo(true);
           const token = sessionStorage.getItem('authToken');
-          const response = await fetch('https://localhost:8080/docentes_asignados', {
+          const response = await fetch('http://localhost:8081/docentes_asignados', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const DocentesPage = () => {
             setError('Error al obtener la respuesta del servidor.');
           }
 
-          const respon = await fetch('https://localhost:8080/cursos_evaluados', {
+          const respon = await fetch('http://localhost:8081/cursos_evaluados', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

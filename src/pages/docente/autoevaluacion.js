@@ -17,7 +17,7 @@ const EvaluacionPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const respuesta = await fetch('https://localhost:8080/criterios_docente');
+      const respuesta = await fetch('http://localhost:8081/criterios_docente');
       
       if (respuesta.ok) {
         const itemsrespuesta = await respuesta.json();
@@ -53,7 +53,7 @@ const EvaluacionPage = () => {
     };
 
     try {
-      const response = await fetch('https://localhost:8080/autoevaluacion_docente', {
+      const response = await fetch('http://localhost:8081/autoevaluacion_docente', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

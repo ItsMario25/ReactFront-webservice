@@ -15,7 +15,7 @@ const ReportsPage = () => {
   const [isEdit, setIsEdit] = useState(false); // Define si estamos en modo edición
 
   useEffect(() => {
-    fetch('https://localhost:8080/periodos_evl')
+    fetch('http://localhost:8081/periodos_evl')
       .then(response => response.json())
       .then(data => {
         const formattedData = data.map(report => ({
@@ -27,7 +27,7 @@ const ReportsPage = () => {
       })
       .catch(error => console.error('Error fetching periodos:', error));
 
-    fetch('https://localhost:8080/periodoactivo')
+    fetch('http://localhost:8081/periodoactivo')
       .then(response => response.json())
       .then(data => {
         if (data && data.id_periodo_evl) {

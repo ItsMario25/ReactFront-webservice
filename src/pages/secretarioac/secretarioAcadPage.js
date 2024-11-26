@@ -19,13 +19,13 @@ const AsignacionDocentesPage = () => {
     const fetchData = async () => {
       try {
        // Realiza la solicitud para verificar si el periodo académico está activo
-        const responsePeriodoAC = await fetch('https://localhost:8080/periodoAcactivo');
+        const responsePeriodoAC = await fetch('http://localhost:8081/periodoAcactivo');
         const periodoDataC = await responsePeriodoAC.json();
 
         if (periodoDataC && periodoDataC.id_periodo_acad){
           setIsPeriodoAc(true)
           // Verifica si hay un periodo de evaluación activo
-          const responsePeriodo = await fetch('https://localhost:8080/periodoactivo');
+          const responsePeriodo = await fetch('http://localhost:8081/periodoactivo');
           const periodoData = await responsePeriodo.json();
           if (periodoData && periodoData.id_periodo_evl) {
               setIsPeriodoActivo(true);
@@ -34,12 +34,12 @@ const AsignacionDocentesPage = () => {
 
         if (!isPeriodoActivo) {
           // Si no hay periodo activo, obtiene los cursos asociados a la facultad del secretario
-          const responseCursos = await fetch('https://localhost:8080/cursos_facultad');
+          const responseCursos = await fetch('http://localhost:8081/cursos_facultad');
           const cursosData = await responseCursos.json();
           setCursos(cursosData);
         }
 
-        const responseAsignados = await fetch('https://localhost:8080/cursos_asignados');
+        const responseAsignados = await fetch('http://localhost:8081/cursos_asignados');
         const cursosAsignadosData = await responseAsignados.json();
         if (cursosAsignadosData){
           console.log(cursosAsignadosData.cursos_asignados)

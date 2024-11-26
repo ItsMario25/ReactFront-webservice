@@ -35,7 +35,7 @@ const Validar_reporte = () => {
         const formData = new FormData();
         formData.append('pdf', file);
 
-        fetch('https://localhost:8080/verificar_reporte', {
+        fetch('https://localhost:8081/verificar_reporte', {
             method: 'POST',
             body: formData,
         })

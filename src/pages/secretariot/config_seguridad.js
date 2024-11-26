@@ -12,7 +12,7 @@ const ConfigSecurityPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('https://localhost:8080/switch_seguridad')
+        fetch('http://localhost:8081/switch_seguridad')
             .then(response => response.json())
             .then(data => {
                 setSwitchMultifactor(data.multifactor);
@@ -28,7 +28,7 @@ const ConfigSecurityPage = () => {
             setSwitchCopiaControlada(value);
         }
 
-        fetch('https://localhost:8080/switch_seguridad', {
+        fetch('http://localhost:8081/switch_seguridad', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ switch: switchName, estado: value }),

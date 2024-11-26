@@ -22,17 +22,17 @@ const AsignarCursoPage = () => {
     const fetchData = async () => {
       try {
         // Obtener el curso por su ID
-        const responseCurso = await fetch(`https://localhost:8080/curso/${id_curso}`);
+        const responseCurso = await fetch(`http://localhost:8081/curso/${id_curso}`);
         const cursoData = await responseCurso.json();
         setCurso(cursoData);
 
         // Obtener los docentes
-        const responseDocentes = await fetch('https://localhost:8080/docentes');
+        const responseDocentes = await fetch('http://localhost:8081/docentes');
         const docentesData = await responseDocentes.json();
         setDocentes(docentesData);
 
         // Obtener los tipos de contratación
-        const responsetipos = await fetch('https://localhost:8080/tipos');
+        const responsetipos = await fetch('http://localhost:8081/tipos');
         const tiposData = await responsetipos.json();
         setTipos(tiposData);
 
@@ -57,7 +57,7 @@ const AsignarCursoPage = () => {
   // Enviar la asignación del docente al curso junto con el tipo
   const handleSubmit = async () => {
     try {
-      const response = await fetch(`https://localhost:8080/asignar_docente`, {
+      const response = await fetch(`http://localhost:8081/asignar_docente`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

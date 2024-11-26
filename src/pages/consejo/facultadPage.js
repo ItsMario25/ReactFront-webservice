@@ -19,13 +19,13 @@ const FacultadPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responsePeriodo = await fetch('https://localhost:8080/periodoactivo');
+        const responsePeriodo = await fetch('http://localhost:8081/periodoactivo');
         const periodoData = await responsePeriodo.json();
         if (periodoData && periodoData.id_periodo_evl) {
           setIsPeriodoActivo(true);
           const token = sessionStorage.getItem('authToken');
           
-          const response = await fetch('https://localhost:8080/docentes_facultad', {
+          const response = await fetch('http://localhost:8081/docentes_facultad', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ const FacultadPage = () => {
             setError('Error al obtener la respuesta del servidor.');
           }
 
-          const respon = await fetch('https://localhost:8080/docentes_evaluados', {
+          const respon = await fetch('http://localhost:8081/docentes_evaluados', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
